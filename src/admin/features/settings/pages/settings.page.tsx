@@ -9,41 +9,43 @@ import ErrorBoundary from '@admin/components/error-boundary';
 import BackupSettings from "@admin/features/settings/tabs/backup.tab";
 import ApiSettings from '@admin/features/settings/tabs/api.tab';
 import PreviewEditorTab from '@admin/features/settings/tabs/preview.tab';
+import { useTranslation } from 'react-i18next';
 
 const Settings = () => {
   const history = useHistory();
   const { params } = useRouteMatch<any>('/settings/:id?');
   const { filterPermissions } = useAuth();
+  const { t } = useTranslation();
 
   const items = useMemo(() => {
     const predefined = [
       {
         key: 'general',
-        name: 'General',
+        name: t('settings.tabs.general'),
         permissions: ['settings'],
         component: GeneralSettings
       },
       {
         key: 'backups',
-        name: 'Backups',
+        name: t('settings.tabs.backups'),
         permissions: ['all'],
         component: BackupSettings,
       },
       {
         key: 'groups',
-        name: 'Groups',
+        name: t('settings.tabs.groups'),
         permissions: ['users_administration'],
         component: GroupSettings
       },
       {
         key: 'api',
-        name: 'Api & Security',
+        name: t('settings.tabs.apiAndSecurity'),
         permissions: ['all'],
         component: ApiSettings
       },
       {
         key: 'preview-editor',
-        name: 'Preview Editor',
+        name: t('settings.tabs.previewEditor'),
         permissions: ['all'],
         component: PreviewEditorTab
       }
@@ -63,7 +65,7 @@ const Settings = () => {
       >
         {items.map((item) => (
           <PivotItem key={item.key} headerText={item.name} itemKey={item.key}>
-            <ErrorBoundary message={`Page ${item.name} errored. Please check console for more details.`}>
+            <ErrorBoundary message={t('message.pageError', { name: item.name })}>
               {item?.component && <item.component />}
             </ErrorBoundary>
           </PivotItem>

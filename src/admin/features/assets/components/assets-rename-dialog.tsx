@@ -12,8 +12,10 @@ import React, {useEffect, useMemo} from 'react';
 import {useForm} from 'react-hook-form';
 import {ControlledTextField} from '@admin/components/rhf-components';
 import {useAssets} from '../context/assets.context';
+import { useTranslation } from 'react-i18next';
 
 const AssetsRenameDialog = () => {
+  const { t } = useTranslation();
   const {rename, selectedAssets, stateData, setStateData} = useAssets();
 
   const selectedAsset = useMemo(() => {
@@ -47,7 +49,7 @@ const AssetsRenameDialog = () => {
       onDismiss={() => setStateData('renameAssetOpen', false)}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Rename?',
+        title: `${t('command.rename')}?`,
       }}
       modalProps={{
         styles: {main: {maxWidth: 450}},
@@ -61,7 +63,7 @@ const AssetsRenameDialog = () => {
             onDismiss={() => rename.reset()}
             dismissButtonAriaLabel="Close"
           >
-            Name already exist
+            {t('message.name.isExist')}
           </MessageBar>
         )}
         <Stack tokens={{childrenGap: 10}}>
@@ -72,7 +74,7 @@ const AssetsRenameDialog = () => {
             autoFocus
             autoComplete="off"
             rules={{
-              required: 'Name is required',
+              required: t('message.name.isRequired') as string,
             }}
           />
         </Stack>
@@ -84,7 +86,7 @@ const AssetsRenameDialog = () => {
           <PrimaryButton
             type="submit"
             data-cy="assets-rename-submit"
-            text="Rename"
+            text={t("command.rename")}
             disabled={rename?.loading}
           />
         </DialogFooter>

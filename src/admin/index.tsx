@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { DialogContextProvider } from '@admin/context/dialog';
 import Hooks from '@shared/features/hooks';
 import { SnackbarContextProvider } from './context/snackbar';
+import '@shared/locales/i18n';
 
 initializeIcons();
 

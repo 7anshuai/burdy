@@ -1,0 +1,183 @@
+{
+  "app": {
+    "name": "Burdy",
+    "docs": "Docs",
+    "dashboard": "Dashboard",
+    "assets": "Assets",
+    "contentTypeBuilder": "Content Type Builder",
+    "contentTypes": "Content Types",
+    "sites": "Sites",
+    "users": "Users",
+    "tags": "Tags",
+    "settings": "Settings",
+    "copyright": "Copyright"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "loginToContinue": "Log in to continue.",
+    "forget": "Can't access account?",
+    "currentPassword": "Current Password",
+    "changePassword": "Change Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsMustMatch": "Password must match.",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Reset Your Password",
+    "resetPasswordDesc": "To reset your password, please enter your email.",
+    "back": "Back",
+    "login": "Log In",
+    "logout": "Log Out"
+  },
+  "assets": {
+    "folder": "Folder",
+    "files": "Files",
+    "tiles": "Tiles",
+    "list": "List",
+    "search": "Search assets...",
+    "newFolder": "New Folder",
+    "confirmDelete": "Are you sure you would like to send this item(s) to the recycle bin?",
+    "viewAsset": "View Asset",
+    "fileSize": "File Size",
+    "mimeType": "MIME Type",
+    "dateCreated": "Date Created",
+    "selectAssets": "Select Assets",
+    "noFiles": "No files",
+    "matchCriteria": "match criteria"
+  },
+  "command": {
+    "add": "Add",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "back": "Back",
+    "cancel": "Cancel",
+    "create": "Create",
+    "close": "Close",
+    "confirm": "Confirm",
+    "new": "New",
+    "edit": "Edit",
+    "details": "Details",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "generate": "Generate",
+    "open": "Open",
+    "preview": "Preview",
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "copyApiUrl": "Copy API URL",
+    "copyUrl": "Copy URL",
+    "refresh": "Refresh",
+    "remove": "Remove",
+    "rename": "Rename",
+    "restore": "Restore",
+    "save": "Save",
+    "settings": "Settings",
+    "upload": "Upload",
+    "download": "Download",
+    "export": "Export",
+    "import": "Import",
+    "update": "Update"
+  },
+  "common": {
+    "author": "Author",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At",
+    "modifiedAt": "Date Modified",
+    "name": "Name",
+    "description": "Description",
+    "slug": "Slug",
+    "status": "Status",
+    "token": "Token",
+    "none": "None"
+  },
+  "message": {
+    "areYouSure": "Are you sure you would like to proceed?",
+    "copied": "Copied to clipboard",
+    "copyApiUrlSuccess": "Successfully copied API URL to clipboard!",
+    "copyUrlSuccess": "Successfully copied URL to clipboard!",
+    "name": {
+      "isExist": "Name already exist",
+      "isRequired": "Name is required"
+    },
+    "slug": {
+      "isRequired": "Slug is required"
+    },
+    "pageError": "Page {{name}} errored. Please check console for more details.",
+    "settingsUpdated": "Settings updated",
+    "invalidJSONType": "Invalid JSON type"
+  },
+  "sites": {
+    "createFolder": "Create folder",
+    "selectParent": "Select parent",
+    "parent": "Parent",
+    "search": "Search posts..."
+  },
+  "settings": {
+    "general": {
+      "title": "General Settings",
+      "empty": "You do not have any general settings sections."
+    },
+    "backups": {
+      "desc": "Create and manage backups."
+    },
+    "api": {
+      "apiVisibility": "API Visibility",
+      "apiVisibilityDesc": "Using sitemap/search API always requires accessToken",
+      "accessTokens": "Access Tokens",
+      "accessTokensDesc": "Generate and delete access tokens which are used to get posts content and search for posts",
+      "deleteItems": "Are you sure you would like to delete these item(s)?",
+      "public": "Public - Requires access token for drafts and search",
+      "private": "Private - Requires access token for all post content requests"
+    },
+    "groups": {
+      "desc": "Manage your group settings. Protected groups are provided by the system and cannot be edited."
+    },
+    "previewEditor": {
+      "title": "Configure Preview editor",
+      "desc": "Enable / Disable preview editor as well as configure rewrite URLs",
+      "enable": "Enable Preview Editor",
+      "urlRewrites": "Preview Editor Rewrites (json)",
+      "copyExample": "Copy example"
+    },
+    "tabs": {
+      "general": "General",
+      "backups": "Backups",
+      "groups": "Groups",
+      "apiAndSecurity": "Api & Security",
+      "previewEditor": "Preview Editor"
+    }
+  },
+  "tags": {
+    "tagSelector": "Tag Selector",
+    "searchTags": "Search tags...",
+    "selectTags": "Select tags",
+    "selectedTags": "Selected tags",
+    "suggestedTags": "Suggested tags",
+    "noResult": "No color tags found"
+  },
+  "user": {
+    "avatar": "Avatar",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "displayName": "Display Name",
+    "email": "Email",
+    "password": "Password",
+    "currentPassword": "Current Password",
+    "addGroups": "Add groups",
+    "removeMemberships": "Remove memberships"
+  },
+  "users": {
+    "account": "Account",
+    "profile": "Profile",
+    "activate": "Activate Users",
+    "deactive": "Deactive Users",
+    "delete": "Delete Users",
+    "search": "Search users...",
+    "sendEmail": "Send email to users",
+    "sendNewPassword": "Send new password to the user",
+    "selectUsers": "Select Users",
+    "userCreated": "User \"{{email}}\" successfully created.",
+    "userUpdated": "User \"{{email}}\" successfully updated."
+  }
+}

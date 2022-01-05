@@ -10,6 +10,7 @@ import {
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useApiSecurity } from '@admin/features/api-security/context/api-security.context';
+import { useTranslation } from 'react-i18next';
 
 interface IAccessTokensDeleteDialogProps {
   isOpen?: boolean;
@@ -23,6 +24,7 @@ const AccessTokensDeleteDialog: React.FC<IAccessTokensDeleteDialogProps> = ({
   onDeleted,
 }) => {
   const { deleteAccessTokens, selectedAccessTokens } = useApiSecurity();
+  const { t } = useTranslation();
 
   useEffect(() => {
     deleteAccessTokens?.reset?.();
@@ -40,14 +42,14 @@ const AccessTokensDeleteDialog: React.FC<IAccessTokensDeleteDialogProps> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Delete?',
+        title: `${('command.delete')}?`,
       }}
       modalProps={{
         styles: { main: { maxWidth: 450 } },
       }}
     >
       <Stack tokens={{ childrenGap: 8 }}>
-        Are you sure you would like to delete these item(s)?
+        {t('api.deleteItems')}
         {deleteAccessTokens?.error?.message && (
           <MessageBar messageBarType={MessageBarType.error}>
             {deleteAccessTokens?.error.message}
@@ -57,7 +59,7 @@ const AccessTokensDeleteDialog: React.FC<IAccessTokensDeleteDialogProps> = ({
       <DialogFooter>
         <DefaultButton
           onClick={onDismiss}
-          text="Cancel"
+          text={t("command.cancel")}
           data-cy="dialog-cancel"
         />
         <PrimaryButton
@@ -66,7 +68,7 @@ const AccessTokensDeleteDialog: React.FC<IAccessTokensDeleteDialogProps> = ({
               selectedAccessTokens?.map((at) => at?.id)
             );
           }}
-          text="Delete"
+          text={t("command.delete")}
           disabled={deleteAccessTokens?.loading}
           data-cy="dialog-confirm"
         />

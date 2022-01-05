@@ -7,6 +7,7 @@ import {
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAssets } from '../context/assets.context';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   shimmer: {
@@ -33,13 +34,14 @@ const AssetsBreadcrumb: React.VoidFunctionComponent<IAssetsBreadcrumbProps> = ({
   ...props
 }) => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { openItem, getAncestors, params } = useAssets();
 
   const items = useMemo(() => {
     const list = [];
     const ancestors = [
       {
-        name: 'Assets',
+        name: t('app.assets'),
         id: null,
       },
       ...(getAncestors?.result || []),

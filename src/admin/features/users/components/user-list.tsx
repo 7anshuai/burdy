@@ -15,6 +15,7 @@ import { useUsers } from '@admin/features/users/context/users.context';
 import {formatDate, userPersonaText} from '@admin/helpers/misc';
 import { useHistory } from 'react-router';
 import { Link } from '@admin/components/links';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   userList: {
@@ -46,6 +47,7 @@ const UserList: React.FC<IUserListProps> = ({
   ...props
 }) => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { list, selection, users: contextUsers } = useUsers();
   const history = useHistory();
 
@@ -55,7 +57,7 @@ const UserList: React.FC<IUserListProps> = ({
     () => [
       {
         key: 'avatar',
-        name: 'Avatar',
+        name: t('user.avatar'),
         isIconOnly: true,
         iconName: 'Contact',
         minWidth: 32,
@@ -74,7 +76,7 @@ const UserList: React.FC<IUserListProps> = ({
       },
       {
         key: 'displayName',
-        name: 'Display Name',
+        name: t('user.displayName'),
         minWidth: 200,
         maxWidth: 260,
         onRender: (userModel: IUser) => (
@@ -96,7 +98,7 @@ const UserList: React.FC<IUserListProps> = ({
       },
       {
         key: 'staticDisplayName',
-        name: 'Display Name',
+        name: t('user.displayName'),
         minWidth: 200,
         maxWidth: 260,
         onRender: (userModel: IUser) => (
@@ -117,7 +119,7 @@ const UserList: React.FC<IUserListProps> = ({
       {
         key: 'groups',
         fieldName: 'groups',
-        name: 'Groups',
+        name: t('settings.tabs.groups'),
         minWidth: 80,
         onRender: ({ groups }: IUser) => (
           <div>{groups.map((group) => group.name).join(', ')}</div>
@@ -126,13 +128,13 @@ const UserList: React.FC<IUserListProps> = ({
       {
         key: 'status',
         fieldName: 'status',
-        name: 'Status',
+        name: t('common.status'),
         minWidth: 0,
       },
       {
         key: 'createdAt',
         fieldName: 'createdAt',
-        name: 'Created At',
+        name: t('common.createdAt'),
         minWidth: 200,
         onRender: ({ createdAt }: IUser) => (
           <div>{formatDate(createdAt)}</div>

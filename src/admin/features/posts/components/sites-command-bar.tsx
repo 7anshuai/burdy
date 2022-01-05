@@ -16,6 +16,7 @@ import {
   testPaths,
 } from '@admin/helpers/utility';
 import { useAllowedPaths } from '@admin/helpers/hooks';
+import { useTranslation } from 'react-i18next';
 
 interface ISitesCommandBarProps {}
 
@@ -29,6 +30,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
     setStateData,
   } = usePosts();
   const history = useHistory();
+  const { t } = useTranslation();
 
   const { filterPermissions } = useAuth();
   const allowedPaths = useAllowedPaths();
@@ -49,7 +51,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       selectedPosts?.[0]?.type !== 'hierarchical_post'
         ? {
             key: 'newItem',
-            text: 'New',
+            text: t('command.new'),
             iconProps: { iconName: 'Add' },
             permissions: ['sites_create'],
             disabled: selectedPosts?.[0]?.type === 'hierarchical_post',
@@ -57,22 +59,22 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
               items: [
                 {
                   key: 'page',
-                  text: 'Page',
+                  text: t('common.page'),
                   onClick: () => setStateData('createPageOpen', true),
                 },
                 {
                   key: 'fragment',
-                  text: 'Fragment',
+                  text: t('common.fragment'),
                   onClick: () => setStateData('createFragmentOpen', true),
                 },
                 {
                   key: 'folder',
-                  text: 'Folder',
+                  text: t('common.folder'),
                   onClick: () => setStateData('createFolderOpen', true),
                 },
                 {
                   key: 'hierarchical_post',
-                  text: 'Hierarchical Posts',
+                  text: t('common.hierarchicalPosts'),
                   onClick: () => setStateData('createPostContainerOpen', true),
                 },
               ],
@@ -80,7 +82,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
           }
         : {
             key: 'open',
-            text: 'Open',
+            text: t('command.open'),
             iconProps: { iconName: 'OpenInNewWindow' },
             onClick: () => {
               history.push(`/sites/post-container/${selectedPosts?.[0]?.id}`);
@@ -90,7 +92,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       testPaths(allowedPaths, selectedPosts?.[0]?.slugPath)
         ? {
             key: 'edit',
-            text: 'Edit',
+            text: t('command.edit'),
             disabled:
               selectedPosts?.length !== 1 ||
               selectedPosts?.[0]?.type === 'folder',
@@ -101,7 +103,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
               items: [
                 {
                   key: 'preview',
-                  text: 'Preview',
+                  text: t('command.preview'),
                   onClick: () => {
                     history.push(
                       `/sites/editor/${selectedPosts?.[0]?.id}?editor=preview`
@@ -116,7 +118,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
           }
         : {
             key: 'edit',
-            text: 'Edit',
+            text: t('command.edit'),
             disabled:
               selectedPosts?.length !== 1 ||
               selectedPosts?.[0]?.type === 'folder',
@@ -128,7 +130,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
           },
       {
         key: 'settings',
-        text: 'Settings',
+        text: t('command.settings'),
         disabled: selectedPosts?.length !== 1,
         iconProps: { iconName: 'Settings' },
         permissions: ['sites_update'],
@@ -138,7 +140,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'copyItem',
-        text: 'Copy',
+        text: t('command.copy'),
         disabled: selectedPosts?.length !== 1,
         iconProps: { iconName: 'Copy' },
         permissions: ['sites_create'],
@@ -148,7 +150,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'delete',
-        text: 'Delete',
+        text: t('command.delete'),
         disabled: selectedPosts?.length === 0,
         iconProps: { iconName: 'Delete' },
         permissions: ['sites_delete'],
@@ -158,7 +160,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'quickPublish',
-        text: 'Publish',
+        text: t('command.publish'),
         disabled: selectedPosts?.length === 0,
         iconProps: { iconName: 'WebPublish' },
         permissions: ['sites_update'],
@@ -168,7 +170,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'quickUnpublish',
-        text: 'Unpublish',
+        text: t('command.unpublish'),
         disabled: selectedPosts?.length === 0,
         iconProps: { iconName: 'UnpublishContent' },
         permissions: ['sites_update'],
@@ -178,7 +180,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'copyUrl',
-        text: 'Copy API URL',
+        text: t('command.copyApiUrl'),
         iconProps: { iconName: 'ClipboardList' },
         disabled:
           selectedPosts?.length === 0 || selectedPosts?.[0]?.type === 'folder',
@@ -188,7 +190,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
             `${window.location.origin}/api/content/${selectedPost.slugPath}`
           );
           snackbar.openSnackbar({
-            message: 'Successfully copied URL to clipboard!',
+            message: t('mesage.copyApiUrlSucces'),
             messageBarType: MessageBarType.success,
             duration: 1000,
           });
@@ -196,7 +198,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
       },
       {
         key: 'refresh',
-        text: 'Refresh',
+        text: t('command.refresh'),
         iconProps: { iconName: 'Refresh' },
         onClick: () => {
           getPosts.execute({
@@ -216,7 +218,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
         key: 'search',
         onRenderIcon: () => (
           <SearchBox
-            placeholder="Search posts..."
+            placeholder={t("sites.search")}
             onChange={(_event, newValue) => {
               debounced(newValue);
             }}

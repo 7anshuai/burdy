@@ -3,6 +3,7 @@ import { getTheme, Icon, mergeStyleSets } from '@fluentui/react';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import { Link } from 'react-router-dom';
 import Hooks from '@shared/features/hooks';
+import i18n from '@shared/locales/i18n';
 
 const theme = getTheme();
 
@@ -68,50 +69,50 @@ const styles = mergeStyleSets({
   }
 });
 
-const defaultLinks = [
-  {
-    title: 'Assets',
-    key: 'assets',
-    icon: 'PhotoVideoMedia',
-    url: '/assets',
-    permissions: ['assets_list']
-  },
-  {
-    title: 'Sites',
-    key: 'sites',
-    icon: 'ReopenPages',
-    url: '/sites',
-    permissions: ['sites_list']
-  },
-  {
-    title: 'Content Type Builder',
-    key: 'content-types',
-    icon: 'PageHeaderEdit',
-    url: '/content-types',
-    permissions: ['content_types_list']
-  },
-  {
-    title: 'Tags',
-    key: 'tags',
-    icon: 'Tag',
-    url: '/tags',
-    permissions: ['tags_list']
-  },
-  {
-    title: 'Users',
-    key: 'users',
-    icon: 'People',
-    url: '/users',
-    permissions: ['users_administration']
-  },
-  {
-    title: 'Settings',
-    key: 'settings',
-    icon: 'Settings',
-    url: '/settings',
-    permissions: ['settings']
-  }
-];
+  const defaultLinks = [
+    {
+      title: i18n.t('app.assets'),
+      key: 'assets',
+      icon: 'PhotoVideoMedia',
+      url: '/assets',
+      permissions: ['assets_list']
+    },
+    {
+      title: i18n.t('app.sites'),
+      key: 'sites',
+      icon: 'ReopenPages',
+      url: '/sites',
+      permissions: ['sites_list']
+    },
+    {
+      title: i18n.t('app.contentTypeBuilder'),
+      key: 'content-types',
+      icon: 'PageHeaderEdit',
+      url: '/content-types',
+      permissions: ['content_types_list']
+    },
+    {
+      title: i18n.t('app.tags'),
+      key: 'tags',
+      icon: 'Tag',
+      url: '/tags',
+      permissions: ['tags_list']
+    },
+    {
+      title: i18n.t('app.users'),
+      key: 'users',
+      icon: 'People',
+      url: '/users',
+      permissions: ['users_administration']
+    },
+    {
+      title: i18n.t('app.settings'),
+      key: 'settings',
+      icon: 'Settings',
+      url: '/settings',
+      permissions: ['settings']
+    }
+  ];
 
 const Dashboard = () => {
   const { filterPermissions } = useAuth();

@@ -13,6 +13,7 @@ import {
 } from '@fluentui/react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField } from '@admin/components/rhf-components';
 import logo from '../../../assets/logo.svg';
@@ -65,6 +66,7 @@ const formSchema = yup.object({
 
 const Forgot: React.FC<any> = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { forgot } = useAuth();
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
@@ -93,10 +95,10 @@ const Forgot: React.FC<any> = () => {
         />
         <Stack tokens={{ childrenGap: 8, padding: '0 0 16px' }}>
           <Text variant="xLargePlus" block>
-            Reset your password
+            {t('auth.resetPasswordTitle')}
           </Text>
           <Text variant="medium" block>
-            To reset your password, please enter your email.
+            {t('auth.resetPasswordDesc')}
           </Text>
         </Stack>
         {forgot.error?.message && (
@@ -131,7 +133,7 @@ const Forgot: React.FC<any> = () => {
                 control={control}
                 type="email"
                 name="email"
-                label="Email"
+                label={t('auth.email')}
                 required
               />
               <Stack
@@ -141,7 +143,7 @@ const Forgot: React.FC<any> = () => {
                 padding="16px 0 0"
               >
                 <Stack.Item shrink={false}>
-                  <Link to="/">Back</Link>
+                  <Link to="/">{t('auth.back')}</Link>
                 </Stack.Item>
                 <Stack.Item shrink>
                   <PrimaryButton
@@ -149,7 +151,7 @@ const Forgot: React.FC<any> = () => {
                     type="submit"
                     disabled={forgot.loading}
                   >
-                    Reset Password
+                    {t('auth.resetPassword')}
                   </PrimaryButton>
                 </Stack.Item>
               </Stack>

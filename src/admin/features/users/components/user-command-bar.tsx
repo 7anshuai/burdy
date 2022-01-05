@@ -12,6 +12,7 @@ import { useAuth } from '@admin/features/authentication/context/auth.context';
 import { useDialog } from '@admin/context/dialog';
 import { IUser, UserStatus } from '@shared/interfaces/model';
 import { useAsync } from '@fluentui/react-hooks';
+import { useTranslation } from 'react-i18next';
 
 type ColumnType =
   | 'add'
@@ -52,13 +53,14 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
   const debouncedSearch = useAsync().debounce((search: string) => {
     setListParams({ ...listParams, search });
   }, 300);
+  const { t } = useTranslation();
 
   const toolbarItems = useMemo<ICommandBarItemProps[]>(
     () =>
       filterPermissions([
         {
           key: 'add',
-          text: 'Add',
+          text: t('command.add'),
           permissions: ['users_administration'],
           'data-cy': 'users-commandBar-add',
           iconProps: {
@@ -68,7 +70,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
         },
         {
           key: 'edit',
-          text: 'Edit',
+          text: t('command.edit'),
           'data-cy': 'users-commandBar-edit',
           iconProps: {
             iconName: 'Edit',
@@ -81,7 +83,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
         },
         {
           key: 'activate',
-          text: 'Activate',
+          text: t('command.activate'),
           permissions: ['users_administration'],
           'data-cy': 'users-commandBar-activate',
           disabled:
@@ -91,8 +93,8 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
           onClick: async () => {
             try {
               await dialog.confirm(
-                'Activate Users',
-                'Are you sure you would like to proceed?'
+                t('users.activate'),
+                t('message.areYouSure')
               );
               await updateMany.execute(
                 selectedUsers.map<Partial<IUser>>(({ id }) => ({
@@ -110,7 +112,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
         },
         {
           key: 'deactivate',
-          text: 'Deactivate',
+          text: t('command.deactivate'),
           permissions: ['users_administration'],
           'data-cy': 'users-commandBar-deactivate',
           disabled:
@@ -120,8 +122,8 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
           onClick: async () => {
             try {
               await dialog.confirm(
-                'Deactivate Users',
-                'Are you sure you would like to proceed?'
+                t('command.deactivate'),
+                t('message.areYouSure')
               );
               await updateMany.execute(
                 selectedUsers.map<Partial<IUser>>(({ id }) => ({
@@ -139,7 +141,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
         },
         {
           key: 'delete',
-          text: 'Delete',
+          text: t('command.delete'),
           permissions: ['users_administration'],
           'data-cy': 'users-commandBar-delete',
           disabled:
@@ -148,8 +150,8 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
           onClick: async () => {
             try {
               await dialog.confirm(
-                'Delete Users',
-                'Are you sure you would like to proceed?'
+                t('users.delete'),
+                t('messag.areYouSure')
               );
               await deleteMany.execute(selectedUsers.map(({ id }) => id));
             } catch (e) {
@@ -162,7 +164,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
         },
         {
           key: 'refresh',
-          text: 'Refresh',
+          text: t('command.refresh'),
           'data-cy': 'users-commandBar-refresh',
           iconProps: { iconName: 'Refresh' },
           onClick: () => {
@@ -182,7 +184,7 @@ const UserCommandBar: React.FC<IUserCommandBarProps> = ({
           'data-cy': 'users-commandBar-search',
           onRenderIcon: () => (
             <SearchBox
-              placeholder="Search users..."
+              placeholder={t("users.search")}
               onChange={(event, newValue) => debouncedSearch(newValue)}
             />
           ),

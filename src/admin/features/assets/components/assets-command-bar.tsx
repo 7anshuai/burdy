@@ -12,6 +12,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { FOLDER_MIME_TYPE, useAssets } from '../context/assets.context';
 import {useSnackbar} from "@admin/context/snackbar";
 import AssetProgressIndicator from "@admin/features/assets/components/asset-progress-indicator";
+import { useTranslation } from 'react-i18next';
 
 type ColumnType =
   | 'new'
@@ -73,12 +74,14 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
 
   const { filterPermissions } = useAuth();
 
+  const { t } = useTranslation();
+
   const commandItems = useMemo<ICommandBarItemProps[]>(
     () =>
       filterPermissions([
         {
           key: 'new',
-          text: 'New',
+          text: t('command.new'),
           'data-cy': 'assets-commandBar-new',
           iconProps: { iconName: 'Add' },
           permissions: ['assets_create'],
@@ -86,7 +89,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
             items: [
               {
                 key: 'folder',
-                text: 'Folder',
+                text: t('assets.folder'),
                 'data-cy': 'assets-commandBar-new-folder',
                 onClick: () => setStateData('newFolderOpen', true),
               },
@@ -95,7 +98,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'upload',
-          text: 'Upload',
+          text: t('command.upload'),
           'data-cy': 'assets-commandBar-upload',
           iconProps: { iconName: 'Upload' },
           permissions: ['assets_create'],
@@ -103,12 +106,12 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
             items: [
               {
                 key: 'folder',
-                text: 'Folder',
+                text: t('assets.folder'),
                 onClick: openFolderDialog,
               },
               {
                 key: 'file',
-                text: 'Files',
+                text: t('assets.files'),
                 onClick: openFileDialog,
               },
             ],
@@ -116,7 +119,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'details',
-          text: 'Details',
+          text: t('command.details'),
           'data-cy': 'assets-commandBar-details',
           disabled:
             selectedAssets?.length !== 1 &&
@@ -126,7 +129,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'rename',
-          text: 'Rename',
+          text: t('command.rename'),
           'data-cy': 'assets-commandBar-rename',
           permissions: ['assets_update'],
           disabled: selectedAssets?.length !== 1,
@@ -135,7 +138,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'download',
-          text: 'Download',
+          text: t('command.download'),
           'data-cy': 'assets-commandBar-download',
           disabled:
             selectedAssets?.length !== 1 ||
@@ -152,7 +155,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'delete',
-          text: 'Delete',
+          text: t('command.delete'),
           'data-cy': 'assets-commandBar-delete',
           disabled: selectedAssets?.length === 0,
           iconProps: { iconName: 'Delete' },
@@ -161,7 +164,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'copy',
-          text: 'Copy URL',
+          text: t('command.copyUrl'),
           'data-cy': 'assets-commandBar-copy',
           disabled:
             selectedAssets?.length !== 1 ||
@@ -181,7 +184,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
         },
         {
           key: 'refresh',
-          text: 'Refresh',
+          text: t('command.refresh'),
           'data-cy': 'assets-commandBar-refresh',
           iconProps: { iconName: 'Refresh' },
           onClick: () => {
@@ -204,14 +207,14 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
             items: [
               {
                 key: 'tiles',
-                text: 'Tiles',
+                text: t('assets.tiles'),
                 'data-cy': 'assets-commandBar-view-tiles',
                 iconProps: { iconName: 'Tiles' },
                 onClick: () => setView('tiles'),
               },
               {
                 key: 'list',
-                text: 'List',
+                text: t('assets.list'),
                 'data-cy': 'assets-commandBar-view-list',
                 iconProps: { iconName: 'List' },
                 onClick: () => setView('list'),
@@ -224,7 +227,7 @@ const AssetsCommandBar: React.FC<IAssetCommandBarProps> = ({
           'data-cy': 'assets-commandBar-search',
           onRenderIcon: () => (
             <SearchBox
-              placeholder="Search assets..."
+              placeholder={t('assets.search')}
               onChange={(event, newValue) => {
                 debounced(newValue);
               }}

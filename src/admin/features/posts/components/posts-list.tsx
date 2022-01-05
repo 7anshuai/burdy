@@ -11,6 +11,7 @@ import Empty from '@admin/components/empty';
 import { useHistory } from 'react-router';
 import { usePosts } from '../context/posts.context';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
+import { useTranslation } from 'react-i18next';
 
 const classNames = mergeStyleSets({
   fileIconHeaderIcon: {
@@ -42,12 +43,13 @@ const PostsList = () => {
   const history = useHistory();
   const { getPosts, posts, selection, getOneContentType, params, additionalData } = usePosts();
   const { hasPermission } = useAuth();
+  const { t } = useTranslation();
 
   const columns = useMemo<IColumn[]>(
     () => [
       {
         key: 'name',
-        name: 'Name',
+        name: t('common.name'),
         fieldName: 'name',
         minWidth: 210,
         isRowHeader: true,
@@ -77,7 +79,7 @@ const PostsList = () => {
       },
       {
         key: 'slug',
-        name: 'Slug',
+        name: t('common.slug'),
         fieldName: 'slug',
         minWidth: 210,
         isRowHeader: true,
@@ -90,7 +92,7 @@ const PostsList = () => {
       },
       {
         key: 'status',
-        name: 'Status',
+        name: t('common.status'),
         fieldName: 'status',
         minWidth: 100,
         maxWidth: 100,
@@ -103,7 +105,7 @@ const PostsList = () => {
       },
       {
         key: 'author',
-        name: 'Author',
+        name: t('common.author'),
         fieldName: 'author',
         minWidth: 210,
         isResizable: true,
@@ -118,7 +120,7 @@ const PostsList = () => {
       },
       {
         key: 'modifiedAt',
-        name: 'Date Modified',
+        name: t('common.modifiedAt'),
         fieldName: 'modifiedAt',
         minWidth: 200,
         maxWidth: 200,

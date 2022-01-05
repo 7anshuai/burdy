@@ -37,6 +37,8 @@ import { IGroup, UserStatus } from '@shared/interfaces/model';
 import generator from 'generate-password-browser';
 import copy from 'copy-text-to-clipboard';
 import { useSnackbar } from '@admin/context/snackbar';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 const useStyles = makeStyles({
   content: {
@@ -52,21 +54,21 @@ const useStyles = makeStyles({
 });
 
 const schema = yup.object({
-  firstName: yup.string().label('First name'),
-  lastName: yup.string().label('Last name'),
+  firstName: yup.string().label(i18next.t('users.firstName')),
+  lastName: yup.string().label(i18next.t('users.lastName')),
   meta: yup.object({
   }),
 });
 
 const resetSchema = yup.object({
-  currentPassword: yup.string().min(6).required().label('Current Password'),
-  password: yup.string().min(6).required().label('Password'),
+  currentPassword: yup.string().min(6).required().label(i18next.t('auth.currentPassword')),
+  password: yup.string().min(6).required().label(i18next.t('auth.password')),
   confirmPassword: yup
     .string()
     .min(6)
     .required()
-    .oneOf([yup.ref('password'), null], 'Passwords must match.')
-    .label('Confirm password'),
+    .oneOf([yup.ref('password'), null], i18next.t('auth.passwordsMustMatch'))
+    .label(i18next.t('auth.confirmPassword')),
 });
 
 const userResetSchema = yup.object({
@@ -74,6 +76,7 @@ const userResetSchema = yup.object({
 });
 
 const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const { updatePassword } = useAuth();
   const { control, handleSubmit, reset } = useForm({
@@ -105,10 +108,10 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
     () => (
       <Stack tokens={{ childrenGap: 10 }} horizontal>
         <PrimaryButton onClick={submit} disabled={updatePassword.loading}>
-          Reset Password
+          {t('auth.resetPassword')}
         </PrimaryButton>
         <DefaultButton onClick={() => setResetOpen(false)}>
-          Cancel
+          {t('command.cancel')}
         </DefaultButton>
       </Stack>
     ),
@@ -117,7 +120,7 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
 
   return (
     <BackPanel
-      title="Change Password"
+      title={t("auth.changePassword")}
       isOpen={resetOpen}
       onBack={() => setResetOpen(false)}
       onDismiss={() => history.push('/users/')}
@@ -127,13 +130,13 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
     >
       <StatusBar
         controller={updatePassword}
-        successMessage="You've successfully reset the password."
+        successMessage={t("message.resetPasswordSuccess")}
       />
       <form onSubmit={submit}>
         <Stack tokens={{ childrenGap: 8 }} style={{ marginTop: 12 }}>
           <ControlledTextField
             control={control}
-            label="Current Password"
+            label={t("auth.currentPassword")}
             name="currentPassword"
             autoComplete="off"
             type="password"
@@ -141,7 +144,7 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
           />
           <ControlledTextField
             control={control}
-            label="New Password"
+            label={t("auth.newPassword")}
             name="password"
             autoComplete="off"
             type="password"
@@ -149,7 +152,7 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
           />
           <ControlledTextField
             control={control}
-            label="Confirm New Password"
+            label={t("auth.confirmNewPassword")}
             name="confirmPassword"
             autoComplete="off"
             type="password"
@@ -162,6 +165,7 @@ const ProfilePasswordReset = ({ resetOpen, setResetOpen }) => {
 };
 
 const UserPasswordReset = ({ resetOpen, setResetOpen }) => {
+  const { t } = useTranslation();
   const users = useUsers();
   const history = useHistory();
   const currentUser = users.get.result;
@@ -195,10 +199,10 @@ const UserPasswordReset = ({ resetOpen, setResetOpen }) => {
     () => (
       <Stack tokens={{ childrenGap: 10 }} horizontal>
         <PrimaryButton onClick={submit} disabled={users.resetPassword.loading}>
-          Reset Password
+          {t('auth.resetPassword')}
         </PrimaryButton>
         <DefaultButton onClick={() => setResetOpen(false)}>
-          Cancel
+          {t('command.cancel')}
         </DefaultButton>
       </Stack>
     ),
@@ -223,7 +227,7 @@ const UserPasswordReset = ({ resetOpen, setResetOpen }) => {
         <Stack tokens={{ childrenGap: 24 }} style={{ marginTop: 24 }}>
           <ControlledTextField
             control={control}
-            label="New Password"
+            label={t("auth.newPassword")}
             type="text"
             name="password"
             autoComplete="off"
@@ -261,7 +265,7 @@ const UserPasswordReset = ({ resetOpen, setResetOpen }) => {
             )}
           />
           <ControlledCheckbox
-            label="Send new password to the user"
+            label={t("users.sendNewPassword")}
             name="notify"
             control={control}
           />
@@ -271,20 +275,24 @@ const UserPasswordReset = ({ resetOpen, setResetOpen }) => {
   );
 };
 
-const ProfileActions = ({ setResetOpen }) => (
-  <>
-    <ActionButton
-      iconProps={{ iconName: 'Lock' }}
-      onClick={() => setResetOpen(true)}
-    >
-      Change Password
-    </ActionButton>
-  </>
-);
+const ProfileActions = ({ setResetOpen }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <ActionButton
+        iconProps={{ iconName: 'Lock' }}
+        onClick={() => setResetOpen(true)}
+      >
+        {t('auth.changePassword')}
+      </ActionButton>
+    </>
+  );
+};
 
 const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
   const users = useUsers();
   const dialog = useDialog();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -292,7 +300,7 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
         iconProps={{ iconName: 'Lock' }}
         onClick={() => setResetOpen(true)}
       >
-        Reset Password
+        {t('auth.resetPassword')}
       </ActionButton>
       <Separator vertical />
       <ActionButton
@@ -305,7 +313,7 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
             try {
               if (currentUser.status === 'active') {
                 await dialog.confirm(
-                  `Deactivate ${currentUser.email}?`,
+                  `${t('command.deactivate')} ${currentUser.email}?`,
                   'Are you sure you would like to deactivate this account?'
                 );
                 await users.update.execute(currentUser.id, {
@@ -313,7 +321,7 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
                 });
               } else {
                 await dialog.confirm(
-                  `Activate ${currentUser.email}?`,
+                  `${t('command.activate')} ${currentUser.email}?`,
                   'Are you sure you would like to activate this account?'
                 );
                 await users.update.execute(currentUser.id, {
@@ -328,7 +336,7 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
           })();
         }}
       >
-        {currentUser.status === 'active' ? 'Deactivate' : 'Activate'}
+        {currentUser.status === 'active' ? t('command.deactivate') : t('command.activate')}
       </ActionButton>
       <Separator vertical />
       <ActionButton
@@ -337,8 +345,8 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
           (async () => {
             try {
               await dialog.confirm(
-                `Delete ${currentUser.email}?`,
-                'Are you sure you would like to proceed?'
+                `${t('command.delete')} ${currentUser.email}?`,
+                t('message.areYouSure')
               );
               await users.deleteMany.execute([currentUser.id]);
               setOpen(false);
@@ -348,13 +356,14 @@ const UserActions = ({ currentUser, setOpen, id, setResetOpen }) => {
           })();
         }}
       >
-        Delete
+        {t('command.delete')}
       </ActionButton>
     </>
   );
 };
 
 const UserEdit = () => {
+  const { t } = useTranslation();
   const styles = useStyles();
   const users = useUsers();
   const [groups, setGroups] = useState<IGroup[]>([]);
@@ -391,7 +400,7 @@ const UserEdit = () => {
       await users.update.execute(id, data as any);
       setOpen(false);
       openSnackbar({
-        message: `User "${currentUser.email}" successfully updated.`,
+        message: t('users.userUpdated', { email: currentUser.email }),
         messageBarType: MessageBarType.success,
       });
     } catch (e) {
@@ -423,8 +432,8 @@ const UserEdit = () => {
   const renderFooterContent = useCallback(
     () => (
       <Stack horizontal tokens={{ childrenGap: 10 }}>
-        <PrimaryButton data-cy="users-edit-submit" onClick={submit}>Update</PrimaryButton>
-        <DefaultButton onClick={() => setOpen(false)}>Cancel</DefaultButton>
+        <PrimaryButton data-cy="users-edit-submit" onClick={submit}>{t('command.update')}</PrimaryButton>
+        <DefaultButton onClick={() => setOpen(false)}>{t('command.cancel')}</DefaultButton>
       </Stack>
     ),
     [setOpen, submit]
@@ -508,7 +517,7 @@ const UserEdit = () => {
                   <Stack.Item grow={1}>
                     <ControlledTextField
                       control={control}
-                      label="First Name"
+                      label={t("user.firstName")}
                       name="firstName"
                       autoComplete="off"
                       data-cy="users-edit-firstName"
@@ -517,7 +526,7 @@ const UserEdit = () => {
                   <Stack.Item grow={1}>
                     <ControlledTextField
                       control={control}
-                      label="Last Name"
+                      label={t("user.lastName")}
                       name="lastName"
                       autoComplete="off"
                       data-cy="users-edit-lastName"
@@ -526,7 +535,7 @@ const UserEdit = () => {
                 </Stack>
               </Stack>
             </PivotItem>
-            {auth.hasPermission(['users_administration']) && <PivotItem headerText="Groups" className={styles.content}>
+            {auth.hasPermission(['users_administration']) && <PivotItem headerText={t("settings.tabs.groups")} className={styles.content}>
               <UserGroups
                 close={close}
                 user={currentUser}

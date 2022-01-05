@@ -13,6 +13,7 @@ import { useApiSecurity } from '@admin/features/api-security/context/api-securit
 import { IAccessToken } from '@shared/interfaces/model';
 import { useForm } from 'react-hook-form';
 import { ControlledTextField } from '@admin/components/rhf-components';
+import { useTranslation } from 'react-i18next';
 
 interface IAccessTokensGenerateDialogProps {
   isOpen?: boolean;
@@ -23,6 +24,7 @@ interface IAccessTokensGenerateDialogProps {
 const AccessTokensGenerateDialog: React.FC<IAccessTokensGenerateDialogProps> =
   ({ isOpen, onDismiss, onGenerate }) => {
     const { generateAccessToken } = useApiSecurity();
+    const { t } = useTranslation();
 
     const { control, handleSubmit, reset } = useForm({
       mode: 'all',
@@ -46,7 +48,7 @@ const AccessTokensGenerateDialog: React.FC<IAccessTokensGenerateDialogProps> =
         onDismiss={onDismiss}
         dialogContentProps={{
           type: DialogType.close,
-          title: 'Generate access token',
+          title: `${t('command.generate')} ${t('api.accessTokens')}`,
         }}
         modalProps={{
           styles: { main: { maxWidth: 450 } },
@@ -61,13 +63,13 @@ const AccessTokensGenerateDialog: React.FC<IAccessTokensGenerateDialogProps> =
           <ControlledTextField
             control={control}
             name="name"
-            label="Name"
+            label={t("common.name")}
           />
         </Stack>
         <DialogFooter>
           <DefaultButton
             onClick={onDismiss}
-            text="Cancel"
+            text={t("command.cancel")}
             data-cy="dialog-cancel"
           />
           <PrimaryButton
@@ -76,7 +78,7 @@ const AccessTokensGenerateDialog: React.FC<IAccessTokensGenerateDialogProps> =
                 generateAccessToken.execute(val?.name);
               })();
             }}
-            text="Generate"
+            text={t("command.generate")}
             disabled={generateAccessToken?.loading}
             data-cy="dialog-confirm"
           />

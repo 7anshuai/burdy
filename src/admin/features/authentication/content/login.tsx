@@ -12,6 +12,7 @@ import {
 } from '@fluentui/react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField } from '@admin/components/rhf-components';
 import logo from '../../../assets/logo.svg';
@@ -66,6 +67,7 @@ const formSchema = yup.object({
 
 const LogIn: React.FC<any> = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { logIn } = useAuth();
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
@@ -90,15 +92,15 @@ const LogIn: React.FC<any> = () => {
           src={logo}
           width={36}
           height={36}
-          alt="Burdy"
+          alt={t('app.name')}
           className={styles.logo}
         />
         <Stack tokens={{ childrenGap: 8, padding: '0 0 16px' }}>
           <Text variant="xLargePlus" block>
-            Burdy.js
+            {t('app.name')}
           </Text>
           <Text variant="medium" block>
-            Log in to continue.
+            {t('auth.loginToContinue')}
           </Text>
         </Stack>
         {logIn.error?.message && (
@@ -115,14 +117,14 @@ const LogIn: React.FC<any> = () => {
               control={control}
               type="email"
               name="email"
-              label="Email"
+              label={t('auth.email')}
               required
               data-cy="login-email"
             />
             <ControlledTextField
               control={control}
               name="password"
-              label="Password"
+              label={t('auth.password')}
               required
               canRevealPassword
               type="password"
@@ -134,7 +136,7 @@ const LogIn: React.FC<any> = () => {
               horizontalAlign="space-between"
             >
               <Stack.Item shrink={false}>
-                <Link to="/forgot">Can't access account?</Link>
+                <Link to="/forgot">{t('auth.forget')}</Link>
               </Stack.Item>
               <Stack.Item shrink>
                 <PrimaryButton
@@ -143,7 +145,7 @@ const LogIn: React.FC<any> = () => {
                   disabled={logIn.loading}
                   data-cy="login-submit"
                 >
-                  Log In
+                  {t('auth.login')}
                 </PrimaryButton>
               </Stack.Item>
             </Stack>

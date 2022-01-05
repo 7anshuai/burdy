@@ -7,8 +7,10 @@ import React, { useMemo, useState } from 'react';
 import { useApiSecurity } from '@admin/features/api-security/context/api-security.context';
 import AccessTokensDeleteDialog from '@admin/features/api-security/components/access-tokens-delete-dialog';
 import AccessTokensGenerateDialog from '@admin/features/api-security/components/access-tokens-generate-dialog';
+import { useTranslation } from 'react-i18next';
 
 const AccessTokensCommandBar = () => {
+  const { t } = useTranslation();
   const { selectedAccessTokens } = useApiSecurity();
 
   const [openGenerate, setOpenGenerate] = useState(false);
@@ -18,7 +20,7 @@ const AccessTokensCommandBar = () => {
     () => [
       {
         key: 'generate',
-        text: 'Generate',
+        text: t('command.generate'),
         iconProps: {
           iconName: 'Add',
         },
@@ -28,7 +30,7 @@ const AccessTokensCommandBar = () => {
       },
       {
         key: 'delete',
-        text: 'Delete',
+        text: t('command.delete'),
         iconProps: {
           iconName: 'Delete',
         },

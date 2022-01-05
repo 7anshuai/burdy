@@ -6,6 +6,7 @@ import { useStorageState } from '@admin/helpers/hooks';
 import Hooks from '@shared/features/hooks';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import {Link} from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles({
 
 const SideNav = () => {
   const classNames = useStyles();
+  const { t } = useTranslation();
   const { getContentTypes } = useSettings();
   const { filterPermissions } = useAuth();
   const location = useLocation();
@@ -53,33 +55,33 @@ const SideNav = () => {
           url: '/',
           key: 'dashboard',
           'data-cy': 'nav-dashboard',
-          name: 'Dashboard',
+          name: t('app.dashboard'),
         },
         {
           url: '/assets',
           key: 'assets',
           'data-cy': 'nav-assets',
-          name: 'Assets',
+          name: t('app.assets'),
           permissions: ['assets_list'],
         },
         {
           url: '/sites',
           key: 'sites',
           'data-cy': 'nav-sites',
-          name: `Sites`,
+          name: t('app.sites'),
           permissions: ['sites_list'],
         },
         {
           url: '/content-types',
           key: 'content-types',
           'data-cy': 'nav-content-types',
-          name: 'Content Types',
+          name: t('app.contentTypes'),
           permissions: ['content_types_list'],
         },
         {
           url: '/tags',
           key: 'tags',
-          name: `Tags`,
+          name: t('app.tags'),
           permissions: ['tags_list'],
         },
       ]),
@@ -90,12 +92,12 @@ const SideNav = () => {
         {
           url: '/users',
           key: 'users',
-          name: 'Users',
+          name: t('app.users'),
         },
         {
           url: '/settings',
           key: 'settings',
-          name: 'Settings',
+          name: t('app.settings'),
           permissions: ['settings'],
         },
       ]),
