@@ -8,6 +8,7 @@ import {
   DialogType,
   PrimaryButton,
 } from '@fluentui/react';
+import { useTranslation } from 'react-i18next';
 
 interface DialogContextInterface {
   confirm: (title: string, message: string) => Promise<void>;
@@ -21,6 +22,7 @@ const DialogContextProvider = ({ children }) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const confirm = useAsyncCallback(async (title: string, message: string) => {
@@ -57,10 +59,10 @@ const DialogContextProvider = ({ children }) => {
         {message}
         <DialogFooter>
           <PrimaryButton data-cy="dialog-confirm" onClick={() => deferred?.resolve()}>
-            Confirm
+            {t('command.confirm')}
           </PrimaryButton>
           <DefaultButton data-cy="dialog-cancel" onClick={() => deferred?.reject('cancelled')}>
-            Cancel
+            {t('command.cancel')}
           </DefaultButton>
         </DialogFooter>
       </Dialog>

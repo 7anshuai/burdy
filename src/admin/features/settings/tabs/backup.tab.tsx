@@ -4,12 +4,14 @@ import { composeWrappers } from '@admin/helpers/hoc';
 import { BackupContextProvider } from '@admin/features/backup/context/backup.context';
 import BackupCommandBar from '@admin/features/backup/components/backup-command-bar';
 import BackupList from '@admin/features/backup/components/backup-list';
+import { useTranslation } from 'react-i18next';
 
 const BackupSettings = () => {
+  const { t } = useTranslation();
   return (
     <div>
-      <Heading title="Backups" noPadding>
-        Create and manage backups.
+      <Heading title={t("settings.tabs.backups")} noPadding>
+        {t('settings.backups.desc')}
       </Heading>
       <BackupCommandBar />
       <BackupList />

@@ -1,0 +1,162 @@
+{
+  "app": {
+    "name": "Burdy",
+    "docs": "文档",
+    "dashboard": "仪表盘",
+    "assets": "媒体资源",
+    "contentTypeBuilder": "内容类型构建器",
+    "contentTypes": "内容类型",
+    "sites": "网站",
+    "users": "用户",
+    "tags": "标签",
+    "settings": "设置",
+    "copyright": "版权信息"
+  },
+  "assets": {
+    "folder": "文件夹",
+    "files": "文件",
+    "tiles": "平铺",
+    "list": "列表",
+    "search": "搜索媒体资源...",
+    "newFolder": "新建文件夹",
+    "confirmDelete": "您确定要将选择的项目放到回收站吗？",
+    "viewAsset": "查看媒体资源",
+    "fileSize": "文件大小",
+    "mimeType": "MIME 类型",
+    "dateCreated": "创建日期",
+    "selectAssets": "选择媒体资源",
+    "noFiles": "没有文件",
+    "matchCriteria": "符合条件"
+  },
+  "auth": {
+    "email": "邮箱",
+    "password": "密码",
+    "loginToContinue": "账号密码登录",
+    "forget": "忘记密码？",
+    "currentPassword": "当前密码",
+    "changePassword": "修改密码",
+    "confirmPassword": "确认密码",
+    "passwordsMustMatch": "密码必须一致",
+    "resetPassword": "重置密码",
+    "resetPasswordTitle": "重置您的密码",
+    "resetPasswordDesc": "要重置您的密码，请输入您的邮箱地址。",
+    "back": "返回",
+    "login": "登录",
+    "logout": "退出登录"
+  },
+  "command": {
+    "add": "添加",
+    "activate": "启用",
+    "deactivate": "停用",
+    "back": "返回",
+    "cancel": "取消",
+    "close": "关闭",
+    "confirm": "确定",
+    "create": "创建",
+    "new": "新建",
+    "edit": "编辑",
+    "details": "详情",
+    "delete": "删除",
+    "duplicate": "复制",
+    "generate": "生成",
+    "open": "打开",
+    "preview": "预览",
+    "publish": "发布",
+    "unpublish": "取消发布",
+    "copyApiUrl": "复制 API URL",
+    "copyUrl": "复制 URL",
+    "refresh": "刷新",
+    "remove": "移除",
+    "rename": "重命名",
+    "restore": "恢复",
+    "save": "保存",
+    "select": "选择",
+    "settings": "设置",
+    "upload": "上传",
+    "download": "下载",
+    "export": "导出",
+    "import": "导入",
+    "update": "更新"
+  },
+  "common": {
+    "createdAt": "创建时间",
+    "updatedAt": "更新时间",
+    "name": "名称",
+    "slug": "Slug",
+    "status": "状态"
+  },
+  "message": {
+    "areYouSure": "您确定要继续吗？",
+    "copied": "已复制到剪贴板",
+    "copyApiUrlSuccess": "已成功将 API URL 复制到剪贴板！",
+    "copyUrlSuccess": "已成功将 URL 复制到剪贴板！",
+    "name": {
+      "isExist": "名称已经存在",
+      "isRequired": "名称为必填项"
+    },
+    "slug": {
+      "isRequired": "Slug 为必填项"
+    },
+    "pageError": "页面 {{name}} 发生错误。请检查控制台获得更多信息。",
+    "settingsUpdated": "配置已更新"
+  },
+  "sites": {},
+  "settings": {
+    "general": {
+      "title": "通用设置",
+      "empty": "您还没有任何通用设置部分。"
+    },
+    "backups": {
+      "desc": "创建和管理备份。"
+    },
+    "api": {
+      "apiVisibility": "API 可见性",
+      "apiVisibilityDesc": "使用站点地图/搜索 API 总是需要访问令牌",
+      "accessTokens": "访问令牌",
+      "accessTokensDesc": "生成和删除用于获取内容和搜索的访问令牌"
+    },
+    "groups": {
+      "desc": "管理您的群组设置。 受保护的组由系统提供，无法编辑。"
+    },
+    "previewEditor": {
+      "title": "配置预览编辑器",
+      "desc": "启用/禁用预览编辑器以及配置重写 URL",
+      "enable": "启用预览编辑器",
+      "urlRewrites": "预览编辑器路由重写规则 (JSON)",
+      "copyExample": "复制示例"
+    },
+    "tabs": {
+      "general": "通用",
+      "backups": "备份",
+      "groups": "群组",
+      "apiAndSecurity": "接口安全",
+      "previewEditor": "预览设置"
+    }
+  },
+  "tags": {
+    "tagSelector": "标签选择器",
+    "searchTags": "搜索标签...",
+    "selectTags": "选择标签",
+    "selectedTags": "选择的标签",
+    "suggestedTags": "建议的标签",
+    "noResult": "未找到颜色标签"
+  },
+  "user": {
+    "avatar": "头像",
+    "firstName": "姓",
+    "lastName": "名",
+    "displayName": "显示名称"
+  },
+  "users": {
+    "account": "账户",
+    "activate": "启用用户",
+    "deactive": "禁用用户",
+    "delete": "删除用户",
+    "search": "搜索用户...",
+    "sendEmail": "发送邮件给用户",
+    "profile": "账户信息",
+    "userCreated": "用户 \"{{email}}\" 已创建成功。",
+    "userUpdated": "用户 \"{{email}}\" 已更新成功。",
+    "selectUsers": "选择用户"
+  }
+}

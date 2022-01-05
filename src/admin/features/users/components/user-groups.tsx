@@ -21,6 +21,7 @@ import {differenceBy, sortBy, sortedUniqBy} from 'lodash';
 import {useGroups} from '@admin/features/groups/context/groups.context';
 import {useHistory} from 'react-router';
 import {useAuth} from '@admin/features/authentication/context/auth.context';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   detailList: {
@@ -47,6 +48,7 @@ const UserGroups: React.FC<UserGroupsProps> = ({
                                                  user,
                                                }) => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const auth = useAuth();
   const history = useHistory();
   const [addGroupOpen, setAddGroupOpen] = useState(false);
@@ -77,14 +79,14 @@ const UserGroups: React.FC<UserGroupsProps> = ({
     () => [
       {
         key: 'add',
-        text: 'Add groups',
+        text: t('user.addGroups'),
         'data-cy': 'users-groups-add',
         iconProps: {iconName: 'Add'},
         onClick: () => setAddGroupOpen(true),
       },
       {
         key: 'delete',
-        text: 'Remove memberships',
+        text: t('user.removeMemberships'),
         'data-cy': 'users-groups-remove',
         iconProps: {iconName: 'Delete'},
         disabled:
@@ -111,7 +113,7 @@ const UserGroups: React.FC<UserGroupsProps> = ({
       },
       {
         key: 'name',
-        name: 'Name',
+        name: t('common.name'),
         fieldName: 'name',
         minWidth: 80,
         maxWidth: 120,
@@ -123,7 +125,7 @@ const UserGroups: React.FC<UserGroupsProps> = ({
       },
       {
         key: 'description',
-        name: 'Description',
+        name: t('common.description'),
         fieldName: 'description',
         minWidth: 120,
       },
@@ -149,7 +151,7 @@ const UserGroups: React.FC<UserGroupsProps> = ({
             setAddGroupOpen(false);
           }}
         >
-          Add Group(s)
+          {t('user.addGroups')}
         </PrimaryButton>
         <DefaultButton data-cy="users-groups-cancel" onClick={() => setAddGroupOpen(false)}>Cancel</DefaultButton>
       </Stack>
@@ -160,7 +162,7 @@ const UserGroups: React.FC<UserGroupsProps> = ({
   return (
     <>
       <BackPanel
-        title="Add Groups"
+        title={t("user.addGroups")}
         type={PanelType.medium}
         isOpen={addGroupOpen}
         onBack={() => setAddGroupOpen(false)}

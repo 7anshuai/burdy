@@ -28,6 +28,7 @@ import {
 } from '../context/assets.context';
 import {useSnackbar} from "@admin/context/snackbar";
 import {formatDate} from "@admin/helpers/misc";
+import { useTranslation } from 'react-i18next';
 
 const stackItemStyles: IStackItemStyles = {
   root: {
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AssetsDetails = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { update, selectedAssets, stateData, setStateData, assetSrc } = useAssets();
   const {openSnackbar} = useSnackbar();
 
@@ -101,10 +103,10 @@ const AssetsDetails = () => {
           }}
           data-cy="assets-details-submit"
         >
-          Save
+          {t('command.save')}
         </PrimaryButton>
         <DefaultButton onClick={() => setStateData('assetDetailsOpen', false)} data-cy="assets-details-close">
-          Close
+          {t('command.close')}
         </DefaultButton>
       </Stack>
     ),
@@ -115,7 +117,7 @@ const AssetsDetails = () => {
     () => [
       {
         key: 'download',
-        text: 'Download',
+        text: t('command.download'),
         disabled:
           selectedAssets?.length !== 1 ||
           (selectedAssets[0] &&
@@ -131,7 +133,7 @@ const AssetsDetails = () => {
       },
       {
         key: 'copy',
-        text: 'Copy URL',
+        text: t('command.copyUrl'),
         disabled:
           selectedAssets?.length !== 1 ||
           (selectedAssets[0] &&
@@ -142,7 +144,7 @@ const AssetsDetails = () => {
             `${window.location.origin}/api/uploads/${selectedAssets[0]?.npath}`
           );
           openSnackbar({
-            message: 'Successfully copied URL to clipboard!',
+            message: t('message.copyUrlSuccess'),
             messageBarType: MessageBarType.success,
             duration: 1000,
           });
@@ -157,7 +159,7 @@ const AssetsDetails = () => {
       isLightDismiss
       isOpen={stateData?.assetDetailsOpen}
       onDismiss={() => setStateData('assetDetailsOpen', false)}
-      headerText="View asset"
+      headerText={t("assets.viewAsset")}
       closeButtonAriaLabel="Close"
       type={PanelType.custom}
       customWidth={400 as any}
@@ -190,14 +192,14 @@ const AssetsDetails = () => {
             onDismiss={() => update.reset()}
             dismissButtonAriaLabel="Close"
           >
-            Name already exist
+            {t('assets.name.isExist')}
           </MessageBar>
         )}
         <div className={styles.wrapper}>
           {selectedAsset?.mimeType !== FOLDER_MIME_TYPE && (
             <Stack styles={stackItemStyles}>
               <Text className={styles.itemHeading} variant="medium" block>
-                File Size
+                {t('assets.fileSize')}
               </Text>
               <Text variant="medium" block>
                 {humanFileSize(selectedAsset?.contentLength)}
@@ -206,7 +208,7 @@ const AssetsDetails = () => {
           )}
           <Stack styles={stackItemStyles}>
             <Text className={styles.itemHeading} variant="medium" block>
-              Mime Type
+              {t('assets.mimeType')}
             </Text>
             <Text variant="medium" block data-cy="assets-details-mimeType">
               {selectedAsset?.mimeType}
@@ -214,7 +216,7 @@ const AssetsDetails = () => {
           </Stack>
           <Stack styles={stackItemStyles}>
             <Text className={styles.itemHeading} variant="medium" block>
-              Date Created
+              {t('assets.dateCreated')}
             </Text>
             <Text variant="medium" block>
               {formatDate(selectedAsset?.createdAt)}
@@ -228,12 +230,12 @@ const AssetsDetails = () => {
               <ControlledTextField name="alt" label="Alt" control={control} />
               <ControlledTextField
                 name="copyright"
-                label="Copyright"
+                label={t("app.copyright")}
                 control={control}
               />
             </>
           )}
-          <TagsPickerControl name="tags" label="Tags" control={control} />
+          <TagsPickerControl name="tags" label={t("app.tags")} control={control} />
         </Stack>
       </Stack>
     </Panel>

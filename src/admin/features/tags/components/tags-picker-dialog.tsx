@@ -10,6 +10,7 @@ import {
   SearchBox,
 } from '@fluentui/react';
 import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDebouncedCallback } from 'use-debounce';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import { useTags, withTagsContext } from '../context/tags.context';
@@ -30,6 +31,7 @@ const TagsPickerDialog: React.FC<ITagsPickerDialog> = ({
   onSelected,
   disableNamespace,
 }) => {
+  const { t } = useTranslation();
   const {
     getTags,
     tagsState,
@@ -64,7 +66,7 @@ const TagsPickerDialog: React.FC<ITagsPickerDialog> = ({
       filterPermissions([
         {
           key: 'newItem',
-          text: 'New',
+          text: t('command.new'),
           iconProps: { iconName: 'Add' },
           permissions: ['tags_create'],
           onClick: () => {
@@ -81,7 +83,7 @@ const TagsPickerDialog: React.FC<ITagsPickerDialog> = ({
         key: 'search',
         onRenderIcon: () => (
           <SearchBox
-            placeholder="Search tags..."
+            placeholder={t("tags.searchTags")}
             onChange={(_event, newValue) => {
               debounced(newValue);
             }}
@@ -98,7 +100,7 @@ const TagsPickerDialog: React.FC<ITagsPickerDialog> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Select tags',
+        title: t('tags.selectTags'),
       }}
       maxWidth="90vw"
     >
@@ -130,14 +132,14 @@ const TagsPickerDialog: React.FC<ITagsPickerDialog> = ({
         onDismiss={() => setStateData('createTagOpen', false)}
       />
       <DialogFooter>
-        <DefaultButton onClick={onDismiss} text="Cancel" />
+        <DefaultButton onClick={onDismiss} text={t("command.cancel")} />
         <PrimaryButton
           onClick={() => {
             if (onSelected) {
               onSelected(selectedTags);
             }
           }}
-          text="Select"
+          text={t("command.select")}
           disabled={
             getTags?.loading ||
             (disableNamespace && selectedTags?.some((tag) => !tag.parentId))

@@ -6,9 +6,11 @@ import {
   PrimaryButton,
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAssets } from '../context/assets.context';
 
 const AssetsDeleteDialog = () => {
+  const { t } = useTranslation();
   const { del, selectedAssets, stateData, setStateData } = useAssets();
 
   useEffect(() => {
@@ -27,23 +29,23 @@ const AssetsDeleteDialog = () => {
       onDismiss={() => setStateData('deleteAssetsOpen', false)}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Delete?',
+        title: `${t('command.delete')}?`,
       }}
       modalProps={{
         styles: { main: { maxWidth: 450 } },
       }}
     >
-      Are you sure you would like to send this item(s) to the recycle bin?
+      {t('assets.confirmDelete')}
       <DialogFooter>
         <DefaultButton
           onClick={() => setStateData('deleteAssetsOpen', false)}
-          text="Cancel"
+          text={t("command.cancel")}
         />
         <PrimaryButton
           onClick={() => {
             del.execute(selectedAssets.map((asset) => asset.id));
           }}
-          text="Delete"
+          text={t("command.delete")}
           data-cy="assets-deleteConfirm"
           disabled={del?.loading}
         />

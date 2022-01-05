@@ -16,6 +16,7 @@ import TagDetails from '../components/tag-details';
 import TagCreateDialog from '../components/tag-create-dialog';
 import TagsDeleteDialog from '../components/tags-delete-dialog';
 import TagUpdateDialog from '../components/tag-update-dialog';
+import { useTranslation } from 'react-i18next';
 
 const theme = getTheme();
 
@@ -55,6 +56,7 @@ const styles = mergeStyleSets({
 });
 
 const TagsPage = () => {
+  const { t } = useTranslation();
   const { getTags, tagsState, params, selectedTags, stateData, setStateData } =
     useTags();
 
@@ -97,8 +99,8 @@ const TagsPage = () => {
             <Heading
               title={
                 selectedTags?.length === 1
-                  ? `Tags: ${selectedTags?.[0]?.slugPath}`
-                  : 'Tags'
+                  ? `${t('app.tags')}: ${selectedTags?.[0]?.slugPath}`
+                  : t('app.tags')
               }
             />
             <div style={{ flex: 1, height: 'calc(100% - 60px)' }}>
@@ -118,7 +120,7 @@ const TagsPage = () => {
                   style={{}}
                 />
               ) : (
-                selectedTags?.length === 1 && 'Details'
+                selectedTags?.length === 1 && t('command.details')
               )}
             </div>
             <div style={{ padding: 24 }}>

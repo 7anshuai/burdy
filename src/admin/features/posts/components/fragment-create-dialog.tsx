@@ -25,18 +25,20 @@ import React, {useEffect, useMemo} from 'react';
 import {Control, useForm} from 'react-hook-form';
 import slugify from 'slugify';
 import {slugRegex, slugRegexMessage} from '@shared/validators';
+import { useTranslation } from 'react-i18next';
 
 interface ISelectParentProps {
   control: Control;
 }
 
 const SelectParentImpl: React.FC<ISelectParentProps> = ({control}) => {
+  const { t } = useTranslation();
   const {getPosts} = usePosts();
   const pages = useMemo(() => {
     return [
       {
         key: null,
-        text: '-- None --',
+        text: `-- ${t('common.none')} --`,
       },
       ...(getPosts?.result || []).map((page) => ({
         key: page.id,
@@ -55,8 +57,8 @@ const SelectParentImpl: React.FC<ISelectParentProps> = ({control}) => {
     <ControlledDropdown
       disabled={getPosts?.loading}
       name="parentId"
-      label="Parent"
-      placeHolder="Select parent"
+      label={t("sites.parent")}
+      placeHolder={t("sites.selectParent")}
       control={control}
       defaultValue={null}
       options={pages}

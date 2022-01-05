@@ -8,13 +8,14 @@ import GroupEdit from '@admin/features/groups/components/group-edit';
 import { Route } from 'react-router';
 import { composeWrappers } from '@admin/helpers/hoc';
 import { GroupsContextProvider } from '@admin/features/groups/context/groups.context';
+import { useTranslation } from 'react-i18next';
 
 const GroupSettings = () => {
+  const { t } = useTranslation();
   return (
     <div>
-      <Heading title="Groups">
-        Manage your group settings. Protected groups are provided by the system
-        and cannot be edited.
+      <Heading title={t("settings.tabs.groups")}>
+        {t('settings.groups.desc')}
       </Heading>
       <div>
         <GroupCommandBar />

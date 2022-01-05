@@ -5,18 +5,19 @@ import AccessTokensCommandBar from '@admin/features/api-security/components/acce
 import AccessTokensList from '@admin/features/api-security/components/access-tokens-list';
 import { ApiSecurityContextProvider } from '@admin/features/api-security/context/api-security.context';
 import ApiAccessSettings from '@admin/features/api-security/components/api-access';
+import { useTranslation } from 'react-i18next';
 
 const ApiSettings = () => {
+  const { t } = useTranslation();
   return (
     <div>
-      <Heading title="API Visibility" noPadding>
-        Using sitemap/search API always requires accessToken
+      <Heading title={t("settings.api.apiVisibility")} noPadding>
+        {t('settings.api.apiVisibilityDesc')}
       </Heading>
       <ApiAccessSettings />
 
-      <Heading title="Access Tokens" noPadding>
-        Generate and delete access tokens which are used to get posts content
-        and search for posts
+      <Heading title={t("settings.api.accessTokens")} noPadding>
+        {t("settings.api.accessTokensDesc")}
       </Heading>
       <AccessTokensCommandBar />
       <AccessTokensList />

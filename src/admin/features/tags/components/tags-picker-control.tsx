@@ -8,6 +8,8 @@ import {
 } from '@fluentui/react';
 import React, { useEffect, useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import { useTags, withTagsContext } from '../context/tags.context';
 import TagsPickerDialog from './tags-picker-dialog';
 
@@ -18,8 +20,8 @@ interface ITagsPickerControlProps {
 }
 
 const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
-  suggestionsHeaderText: 'Suggested tags',
-  noResultsFoundText: 'No color tags found',
+  suggestionsHeaderText: i18next.t('tags.suggestedTags'),
+  noResultsFoundText: i18next.t('tags.noResult'),
 };
 
 const TagsPickerControl: React.FC<ITagsPickerControlProps> = ({
@@ -28,6 +30,7 @@ const TagsPickerControl: React.FC<ITagsPickerControlProps> = ({
   name,
 }) => {
   const picker = React.useRef<IBasePicker<ITag>>(null);
+  const { t } = useTranslation();
 
   const [tagsPickerOpened, setTagsPickerOpened] = useState(false);
   const { getTags, tags } = useTags();
@@ -94,7 +97,7 @@ const TagsPickerControl: React.FC<ITagsPickerControlProps> = ({
             >
               <Label>{label}</Label>
               <ActionButton
-                text="Tag Selector"
+                text={t("tags.tagSelector")}
                 onClick={() => {
                   setTagsPickerOpened(true);
                 }}
@@ -110,8 +113,8 @@ const TagsPickerControl: React.FC<ITagsPickerControlProps> = ({
                 onChange(items);
               }}
               selectedItems={value}
-              removeButtonAriaLabel="Remove"
-              selectionAriaLabel="Selected tags"
+              removeButtonAriaLabel={t("command.remove")}
+              selectionAriaLabel={t("tags.selectedTags")}
               componentRef={picker}
               onResolveSuggestions={filterSelectedTags(value)}
               onItemSelected={onItemSelected(value)}

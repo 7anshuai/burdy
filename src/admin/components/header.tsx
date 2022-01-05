@@ -10,6 +10,7 @@ import {
   Stack
 } from '@fluentui/react';
 import { useHistory } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { userPersonaText } from '@admin/helpers/misc';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +41,7 @@ const Header = () => {
   const { user, logOut } = useAuth();
   const history = useHistory();
   const styles = useStyles();
+  const { t } = useTranslation();
 
   return (
     <header className={styles.header}>
@@ -55,7 +57,7 @@ const Header = () => {
             style={{ height: 48 }}
             href='/admin'
           >
-            Burdy
+            { t('app.name') }
           </PrimaryButton>
         </Stack>
         <Stack horizontal>
@@ -65,7 +67,7 @@ const Header = () => {
             style={{ height: 48 }}
             href='https://burdy.io/docs'
             target='_blank'
-          >Docs</PrimaryButton>
+          >{t('app.docs')}</PrimaryButton>
           <PrimaryButton
             menuIconProps={{ style: { display: 'none' } }}
             style={{ height: 48, minWidth: 0, padding: '0 12px' }}
@@ -81,14 +83,14 @@ const Header = () => {
               items: [
                 {
                   key: 'profile',
-                  text: 'Profile',
+                  text: t('users.profile'),
                   onClick: () => {
                     history.push(`/users/edit/${user.id}`);
                   }
                 },
                 {
                   key: 'logout',
-                  text: 'Log Out',
+                  text: t('auth.logout'),
                   onClick: () => {
                     logOut.execute();
                   }

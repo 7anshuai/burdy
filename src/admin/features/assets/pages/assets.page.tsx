@@ -3,6 +3,7 @@ import { composeWrappers } from '@admin/helpers/hoc';
 import { SearchBox, Stack, StackItem } from '@fluentui/react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useHistory, useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import queryString from 'query-string';
 import { AssetsContextProvider, useAssets } from '../context/assets.context';
 import AssetsDetails from '../components/assets-details';
@@ -15,6 +16,7 @@ import AssetsView from '../components/assets-view';
 import AssetsDropzone from '../components/assets-dropzone';
 
 const AssetsPage = () => {
+  const { t } = useTranslation();
   const { getAssets, getAncestors, setParams, params } = useAssets();
 
   const location = useLocation();
@@ -67,7 +69,7 @@ const AssetsPage = () => {
             </StackItem>
             <StackItem>
               <SearchBox
-                placeholder="Search assets..."
+                placeholder={t('assets.search')}
                 onChange={(_event, newValue) => {
                   debounced(newValue);
                 }}

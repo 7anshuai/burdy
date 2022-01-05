@@ -11,9 +11,11 @@ import {
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useAssets } from '../context/assets.context';
 
 const AssetsCreateFolderDialog = () => {
+  const { t } = useTranslation();
   const { stateData, setStateData, createFolder, params } = useAssets();
 
   const { control, reset, handleSubmit } = useForm({
@@ -48,7 +50,7 @@ const AssetsCreateFolderDialog = () => {
       onDismiss={() => setStateData('newFolderOpen', false)}
       dialogContentProps={{
         type: DialogType.normal,
-        title: 'New Folder',
+        title: t('assets.newFolder'),
       }}
       modalProps={{
         styles: { main: { maxWidth: 450 } },
@@ -61,7 +63,7 @@ const AssetsCreateFolderDialog = () => {
           onDismiss={() => createFolder.reset()}
           dismissButtonAriaLabel="Close"
         >
-          Name already exist
+          {t('assets.name.isExist')}
         </MessageBar>
       )}
 
@@ -72,7 +74,7 @@ const AssetsCreateFolderDialog = () => {
             control={control}
             data-cy="assets-createFolder-name"
             rules={{
-              required: 'Name is required',
+              required: t('assets.name.isRequired') as string,
             }}
             autoComplete="off"
           />
@@ -81,12 +83,12 @@ const AssetsCreateFolderDialog = () => {
         <DialogFooter>
           <DefaultButton
             onClick={() => setStateData('newFolderOpen', false)}
-            text="Cancel"
+            text={t("command.cancel")}
           />
           <PrimaryButton
             data-cy="assets-createFolder-submit"
             type="submit"
-            text="Create"
+            text={t("command.create")}
             disabled={createFolder?.loading}
           />
         </DialogFooter>

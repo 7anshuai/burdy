@@ -21,6 +21,7 @@ import AssetsDropzone from './assets-dropzone';
 import AssetsBreadcrumb from './assets-breadcrumb';
 import AssetsTiles from './assets-tiles';
 import AssetsDeleteDialog from '@admin/features/assets/components/assets-delete-dialog';
+import { useTranslation } from 'react-i18next';
 
 interface IAssetsSelectPanelProps {
   isOpen?: boolean;
@@ -38,6 +39,7 @@ const AssetsSelectPanel: React.FC<IAssetsSelectPanelProps> = ({
   selectionMode,
   mimeTypes,
 }) => {
+  const { t } = useTranslation();
   const {
     getAssets,
     assets,
@@ -87,7 +89,7 @@ const AssetsSelectPanel: React.FC<IAssetsSelectPanelProps> = ({
   return (
     <Panel
       isOpen={isOpen}
-      headerText="Select assets"
+      headerText={t("assets.selectAssets")}
       isFooterAtBottom
       onRenderFooterContent={Footer}
       onDismiss={onDismiss}
@@ -120,8 +122,8 @@ const AssetsSelectPanel: React.FC<IAssetsSelectPanelProps> = ({
           <Empty
             title={
               params?.search?.length > 0
-                ? 'No files match criteria'
-                : 'No files'
+                ? t('assets.No files match criteria')
+                : t('assets.noFiles')
             }
             image="files"
           />

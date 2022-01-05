@@ -5,9 +5,11 @@ import { useForm } from 'react-hook-form';
 import { findSettingsValue, isTrue } from '@admin/helpers/utility';
 import { useSettings } from '@admin/context/settings';
 import _ from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const ApiAccessSettings = () => {
   const { updateSettings, settingsArray } = useSettings();
+  const { t } = useTranslation();
 
   const defaultValues = useMemo(() => {
     const apiAccess = findSettingsValue(settingsArray, 'apiAccess');
@@ -36,11 +38,11 @@ const ApiAccessSettings = () => {
         options={[
           {
             key: 'public',
-            text: 'Public - Requires access token for drafts and search',
+            text: t('api.public'),
           },
           {
             key: 'private',
-            text: 'Private - Requires access token for all post content requests',
+            text: t('api.private'),
           },
         ]}
       />
@@ -53,7 +55,7 @@ const ApiAccessSettings = () => {
             })();
           }}
         >
-          Update
+          {t('command.update')}
         </PrimaryButton>
       </Stack>
     </Stack>

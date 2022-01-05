@@ -9,6 +9,7 @@ import {
 import React, { useEffect } from 'react';
 import { useApiSecurity } from '@admin/features/api-security/context/api-security.context';
 import copy from 'copy-text-to-clipboard';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   accessTokensList: {
@@ -25,6 +26,7 @@ const AccessTokensList = () => {
   const { selection, listAccessTokens, accessTokens } = useApiSecurity();
 
   const styles = useStyles();
+  const { t } = useTranslation();
 
   useEffect(() => {
     listAccessTokens.execute();
@@ -33,13 +35,13 @@ const AccessTokensList = () => {
   const columns = [
     {
       key: 'name',
-      name: 'Name',
+      name: t('common.name'),
       fieldName: 'name',
       minWidth: 120,
     },
     {
       key: 'token',
-      name: 'Token',
+      name: t('common.token'),
       minWidth: 300,
       onRender: (item) => {
         return (
@@ -73,7 +75,7 @@ const AccessTokensList = () => {
     },
     {
       key: 'createdAt',
-      name: 'Created At',
+      name: t('common.createdAt'),
       fieldName: 'createdAt',
       minWidth: 120,
     },

@@ -23,6 +23,7 @@ import SitesCopyDialog from '../components/sites-copy-dialog';
 import PostPublishDialog from '@admin/features/posts/components/post-publish-dialog';
 import PostUnpublishDialog from '@admin/features/posts/components/post-unpublish-dialog';
 import CreatePostContainerDialog from "@admin/features/posts/components/hierarchical-post-create-dialog";
+import { useTranslation } from 'react-i18next';
 
 const theme = getTheme();
 
@@ -80,6 +81,7 @@ const SitesPage = () => {
 
   const history = useHistory();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getPosts.execute({
@@ -117,8 +119,8 @@ const SitesPage = () => {
             <Heading
               title={
                 selectedPosts?.length === 1
-                  ? `Sites: ${selectedPosts?.[0]?.slugPath}`
-                  : 'Sites'
+                  ? `${t('app.sites')}: ${selectedPosts?.[0]?.slugPath}`
+                  : t('app.sites')
               }
             />
             <div style={{ flex: 1, height: 'calc(100% - 60px)' }}>
@@ -176,7 +178,7 @@ const SitesPage = () => {
                   style={{}}
                 />
               ) : (
-                selectedPosts?.length === 1 && 'Details'
+                selectedPosts?.length === 1 && t('command.details')
               )}
             </div>
             <div style={{ padding: 24 }}>

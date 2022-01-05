@@ -9,6 +9,7 @@ import { useSettings } from '@admin/context/settings';
 import copy from 'copy-text-to-clipboard';
 import _ from 'lodash';
 import { useSnackbar } from '@admin/context/snackbar';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
   editor: {
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PreviewEditorSettings = () => {
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const { updateSettings, settingsArray } = useSettings();
   const {openSnackbar} = useSnackbar();
@@ -26,7 +28,7 @@ const PreviewEditorSettings = () => {
   useEffect(() => {
     if (updateSettings?.result) {
       openSnackbar({
-        message: 'Settings updated',
+        message: t('message.settingsUpdated'),
         messageBarType: MessageBarType.success
       });
       updateSettings.reset();
@@ -72,7 +74,7 @@ const PreviewEditorSettings = () => {
       <ControlledCheckbox
         control={control}
         name="enabled"
-        label="Enable Preview Editor"
+        label={t("settings.previewEditor.enable")}
       />
       <Stack tokens={{ childrenGap: 4 }}>
         <div
@@ -82,9 +84,9 @@ const PreviewEditorSettings = () => {
             alignItems: 'center',
           }}
         >
-          <Label>Preview Editor Rewrites (json)</Label>
+          <Label>{t('settings.previewEditor.urlRewrites')}</Label>
           <ActionButton
-            text="Copy example"
+            text={t("settings.previewEditor.copyExample")}
             onClick={() => {
               copy(
                 JSON.stringify(
@@ -107,7 +109,7 @@ const PreviewEditorSettings = () => {
                 )
               );
               openSnackbar({
-                message: 'Copied to clipboard',
+                message: t('message.copied'),
                 messageBarType: MessageBarType.success
               })
             }}
@@ -153,14 +155,14 @@ const PreviewEditorSettings = () => {
                 updateSettings.execute('previewEditor', stringified);
               } catch (err) {
                 openSnackbar({
-                  message: 'Invalid JSON type',
+                  message: t('message.invalidJSONType'),
                   messageBarType: MessageBarType.error
                 })
               }
             })();
           }}
         >
-          Update
+          {t('command.update')}
         </PrimaryButton>
       </Stack>
     </Stack>

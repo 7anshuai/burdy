@@ -13,6 +13,7 @@ import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {useTags} from '../context/tags.context';
 import {slugRegex, slugRegexMessage} from '@shared/validators';
+import { useTranslation } from 'react-i18next';
 
 interface ITagUpdateDialogProps {
   isOpen?: boolean;
@@ -26,6 +27,7 @@ const TagUpdateDialog: React.FC<ITagUpdateDialogProps> = ({
                                                             onUpdated,
                                                           }) => {
   const {updateTag, selectedTags} = useTags();
+  const { t } = useTranslation();
 
   const {control, handleSubmit, reset} = useForm({
     mode: 'all',
@@ -57,7 +59,7 @@ const TagUpdateDialog: React.FC<ITagUpdateDialogProps> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: `Update ${selectedTags?.[0]?.name}`,
+        title: `${t('command.update')} ${selectedTags?.[0]?.name}`,
       }}
       modalProps={{
         styles: {main: {maxWidth: 500}},
@@ -76,20 +78,20 @@ const TagUpdateDialog: React.FC<ITagUpdateDialogProps> = ({
           )}
           <ControlledTextField
             rules={{
-              required: 'Name is required',
+              required: t('message.name.isRequired') as string,
             }}
             name="name"
-            label="Name"
+            label={t("common.name")}
             control={control}
             data-cy="tags-update-name"
             autoFocus
           />
           <ControlledTextField
             name="slug"
-            label="Slug"
+            label={t("common.slug")}
             control={control}
             rules={{
-              required: 'Slug is required',
+              required: t('message.slug.isRequired') as string,
               pattern: {
                 value: slugRegex,
                 message: slugRegexMessage,
@@ -99,10 +101,10 @@ const TagUpdateDialog: React.FC<ITagUpdateDialogProps> = ({
           />
         </Stack>
         <DialogFooter>
-          <DefaultButton onClick={onDismiss} text="Cancel"/>
+          <DefaultButton onClick={onDismiss} text={t("command.cancel")}/>
           <PrimaryButton
             type="submit"
-            text="Update"
+            text={t("command.update")}
             disabled={updateTag?.loading}
             data-cy="tags-update-submit"
           />

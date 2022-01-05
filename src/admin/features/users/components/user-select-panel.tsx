@@ -16,6 +16,7 @@ import { composeWrappers } from '@admin/helpers/hoc';
 import UserSelect, {
   IUserSelectProps,
 } from '@admin/features/users/components/user-select';
+import { useTranslation } from 'react-i18next';
 
 export interface IUserSelectPanelProps extends IUserSelectProps {
   onDismiss?: () => void;
@@ -43,6 +44,7 @@ const UserSelectPanel = forwardRef<IUserSelectPanelRef, IUserSelectPanelProps>(
     },
     ref
   ) => {
+    const { t } = useTranslation();
     const usersContext = useUsers();
     const { selectedUsers } = usersContext;
 
@@ -57,10 +59,10 @@ const UserSelectPanel = forwardRef<IUserSelectPanelRef, IUserSelectPanelProps>(
             disabled={selectedUsers.length === 0}
             onClick={() => onSubmit?.(selectedUsers)}
           >
-            Select
+            {t('command.select')}
           </PrimaryButton>
           <DefaultButton onClick={() => (onBack ? onBack?.() : onDismiss?.())}>
-            Cancel
+            {t('command.cancel')}
           </DefaultButton>
         </Stack>
       ),
@@ -69,7 +71,7 @@ const UserSelectPanel = forwardRef<IUserSelectPanelRef, IUserSelectPanelProps>(
 
     return (
       <BackPanel
-        title="Select users"
+        title={t('users.selectUsers')}
         isFooterAtBottom
         onRenderFooterContent={onRenderFooterContent}
         onDismiss={onDismiss}

@@ -8,9 +8,11 @@ import React, { useMemo } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useTags } from '../context/tags.context';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
+import { useTranslation } from 'react-i18next';
 
 interface ITagsCommandBarProps {}
 const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
+  const { t } = useTranslation();
   const {
     selectedTags,
     getTags,
@@ -35,7 +37,7 @@ const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
       filterPermissions([
         {
           key: 'newItem',
-          text: 'New',
+          text: t('command.new'),
           'data-cy': 'tags-commandBar-new',
           iconProps: { iconName: 'Add' },
           permissions: ['tags_create'],
@@ -45,7 +47,7 @@ const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
         },
         {
           key: 'update',
-          text: 'Update',
+          text: t('command.update'),
           'data-cy': 'tags-commandBar-update',
           disabled: selectedTags?.length !== 1,
           iconProps: { iconName: 'Edit' },
@@ -56,7 +58,7 @@ const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
         },
         {
           key: 'delete',
-          text: 'Delete',
+          text: t('command.delete'),
           'data-cy': 'tags-commandBar-delete',
           disabled: selectedTags?.length === 0,
           iconProps: { iconName: 'Delete' },
@@ -67,7 +69,7 @@ const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
         },
         {
           key: 'refresh',
-          text: 'Refresh',
+          text: t('command.refresh'),
           'data-cy': 'tags-commandBar-refresh',
           iconProps: { iconName: 'Refresh' },
           onClick: () => {
@@ -84,7 +86,7 @@ const TagsCommandBar: React.FC<ITagsCommandBarProps> = () => {
         key: 'search',
         onRenderIcon: () => (
           <SearchBox
-            placeholder="Search tags..."
+            placeholder={t("tags.searchTags")}
             onChange={(event, newValue) => {
               debounced(newValue);
             }}

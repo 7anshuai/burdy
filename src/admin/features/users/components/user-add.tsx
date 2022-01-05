@@ -31,6 +31,8 @@ import UserGroups from '@admin/features/users/components/user-groups';
 import { IGroup } from '@shared/interfaces/model';
 import { useSnackbar } from '@admin/context/snackbar';
 import StatusBar from '@admin/components/status-bar';
+import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 
 const useStyles = makeStyles({
   content: {
@@ -46,13 +48,14 @@ const useStyles = makeStyles({
 });
 
 const schema = yup.object({
-  password: yup.string().min(6).required().label('Password'),
-  email: yup.string().email().required().label('Email'),
-  firstName: yup.string().label('First name'),
-  lastName: yup.string().label('Last name'),
+  password: yup.string().min(6).required().label(i18next.t('user.password')),
+  email: yup.string().email().required().label(i18next.t('user.email')),
+  firstName: yup.string().label(i18next.t('user.firstName')),
+  lastName: yup.string().label(i18next.t('user.lastName')),
 });
 
 const UserAdd = () => {
+  const { t } = useTranslation();
   const styles = useStyles();
   const [groups, setGroups] = useState<IGroup[]>([]);
   const { create } = useUsers();
@@ -99,7 +102,7 @@ const UserAdd = () => {
       await create.execute(data as any);
       setOpen(false);
       openSnackbar({
-        message: `User "${data.email}" successfully created.`,
+        message: t('users.userCreated', { email: data.email }),
         messageBarType: MessageBarType.success,
       });
     } catch (e) {
@@ -110,8 +113,8 @@ const UserAdd = () => {
   const renderFooterContent = useCallback(
     () => (
       <Stack horizontal tokens={{ childrenGap: 10 }}>
-        <PrimaryButton data-cy="users-add-submit" onClick={submit}>Create</PrimaryButton>
-        <DefaultButton onClick={() => setOpen(false)}>Cancel</DefaultButton>
+        <PrimaryButton data-cy="users-add-submit" onClick={submit}>{t('command.create')}</PrimaryButton>
+        <DefaultButton onClick={() => setOpen(false)}>{t('command.cancel')}</DefaultButton>
       </Stack>
     ),
     []
@@ -120,7 +123,7 @@ const UserAdd = () => {
   return (
     <Panel
       isOpen={open}
-      headerText="Profile"
+      headerText={t("users.profile")}
       isFooterAtBottom
       onRenderFooterContent={renderFooterContent}
       onDismiss={() => setOpen(false)}
@@ -155,7 +158,7 @@ const UserAdd = () => {
             </Stack.Item>
           </Stack>
           <Pivot data-cy="users-add-tabs">
-            <PivotItem className={styles.content} headerText="Account">
+            <PivotItem className={styles.content} headerText={t("users.account")}>
               <Stack tokens={{ childrenGap: 24 }} style={{ width: '100%' }}>
                 <StatusBar controller={create} />
                 <Stack tokens={{ childrenGap: 12 }}>
@@ -163,7 +166,7 @@ const UserAdd = () => {
                     <Stack.Item grow={1}>
                       <ControlledTextField
                         control={control}
-                        label="First Name"
+                        label={t("user.firstName")}
                         name="firstName"
                         autoComplete="off"
                         data-cy="users-add-firstName"
@@ -172,7 +175,7 @@ const UserAdd = () => {
                     <Stack.Item grow={1}>
                       <ControlledTextField
                         control={control}
-                        label="Last Name"
+                        label={t("user.lastName")}
                         name="lastName"
                         autoComplete="off"
                         data-cy="users-add-lastName"
@@ -181,7 +184,7 @@ const UserAdd = () => {
                   </Stack>
                   <ControlledTextField
                     control={control}
-                    label="Email"
+                    label={t("user.email")}
                     name="email"
                     autoComplete="off"
                     data-cy="users-add-email"
@@ -189,7 +192,7 @@ const UserAdd = () => {
                   <Stack>
                     <ControlledTextField
                       control={control}
-                      label="Password"
+                      label={t("user.password")}
                       type="text"
                       name="password"
                       autoComplete="off"
@@ -230,7 +233,7 @@ const UserAdd = () => {
                   </Stack>
                   <ControlledCheckbox
                     control={control}
-                    label="Send email to user"
+                    label={t("users.sendEmail")}
                     name="notify"
                     styles={{
                       root: {
@@ -241,7 +244,7 @@ const UserAdd = () => {
                 </Stack>
               </Stack>
             </PivotItem>
-            <PivotItem headerText="Groups" className={styles.content}>
+            <PivotItem headerText={t("settings.tabs.groups")} className={styles.content}>
               <UserGroups setGroups={setGroups} groups={groups} close={close} />
             </PivotItem>
           </Pivot>
