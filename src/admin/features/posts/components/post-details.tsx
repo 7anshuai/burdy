@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import { IPost } from '@shared/interfaces/model';
 import Status from '@admin/components/status';
+import { useTranslation } from 'react-i18next';
 
 const theme = getTheme();
 
@@ -46,6 +47,7 @@ interface IPostDetailsProps {
 
 const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
   const shimmerList = [1, 0.8, 0.6, 0.4];
+  const { t } = useTranslation();
 
   return (
     <>
@@ -84,7 +86,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
         <Stack data-cy="post-details" tokens={{ childrenGap: 10 }}>
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Name
+              {t('common.name')}
             </Text>
             <Text variant="medium" block>
               {post?.name}
@@ -92,7 +94,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           </Stack>
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Slug
+              {t('common.slug')}
             </Text>
             <Text variant="medium" block>
               {post?.slug}
@@ -100,7 +102,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           </Stack>
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Status
+              {t('common.status')}
             </Text>
             <Text block>
               <div>
@@ -111,7 +113,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           {post?.publishedAt && (
             <Stack>
               <Text className={styles.itemHeading} variant="medium" block>
-                Published at
+                {t('common.publishedAt')}
               </Text>
               <Text variant="medium" block>
                 {new Date(post?.publishedAt).toLocaleDateString([], {
@@ -125,7 +127,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           {post?.publishedFrom && (
             <Stack>
               <Text className={styles.itemHeading} variant="medium" block>
-                Published from
+                {t('common.publishedFrom')}
               </Text>
               <Text variant="medium" block>
                 {new Date(post?.publishedFrom).toLocaleDateString([], {
@@ -139,7 +141,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           {post?.publishedUntil && (
             <Stack>
               <Text className={styles.itemHeading} variant="medium" block>
-                Published until
+                {t('common.publishedUntil')}
               </Text>
               <Text variant="medium" block>
                 {new Date(post?.publishedUntil).toLocaleDateString([], {
@@ -152,7 +154,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           )}
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Last Update
+              {t('common.lastUpdate')}
             </Text>
             <Text variant="medium" className={styles.ellipsis} block>
               {post?.updatedAt &&
@@ -165,7 +167,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           </Stack>
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Updated by
+              {t('common.updatedBy')}
             </Text>
             <Text variant="medium" block className={styles.ellipsis}>
               {post?.author?.firstName} {post?.author?.lastName}
@@ -173,7 +175,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           </Stack>
           <Stack>
             <Text className={styles.itemHeading} variant="medium" block>
-              Tags
+              {t('app.tags')}
             </Text>
             <Text variant="medium" block>
               {!(post?.tags?.length > 0) && 'No tags'}
@@ -194,7 +196,7 @@ const PostDetails: React.FC<IPostDetailsProps> = ({ post, loading }) => {
           {post?.contentType && (
             <Stack>
               <Text className={styles.itemHeading} variant="medium" block>
-                Content Type
+                {t('sites.contentType')}
               </Text>
               <Text variant="medium" className={styles.ellipsis} block>
                 {post?.contentType?.name}

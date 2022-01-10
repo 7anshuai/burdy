@@ -190,7 +190,7 @@ const SitesCommandBar: React.FC<ISitesCommandBarProps> = () => {
             `${window.location.origin}/api/content/${selectedPost.slugPath}`
           );
           snackbar.openSnackbar({
-            message: t('mesage.copyApiUrlSucces'),
+            message: t('mesage.copyApiUrlSuccess'),
             messageBarType: MessageBarType.success,
             duration: 1000,
           });

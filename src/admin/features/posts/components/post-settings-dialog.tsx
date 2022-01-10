@@ -15,6 +15,7 @@ import {
 import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {slugRegex, slugRegexMessage} from '@shared/validators';
+import { useTranslation } from 'react-i18next';
 
 interface IPostSettingsDialogProps {
   post: any;
@@ -31,6 +32,7 @@ const PostSettingsDialog: React.FC<IPostSettingsDialogProps> = ({
                                                                 }) => {
   const {updatePost} = usePosts();
   const {openSnackbar} = useSnackbar();
+  const { t } = useTranslation();
 
   const {control, handleSubmit, reset} = useForm({
     mode: 'all',
@@ -51,7 +53,7 @@ const PostSettingsDialog: React.FC<IPostSettingsDialogProps> = ({
     if (updatePost?.result && isOpen) {
       onUpdated(updatePost?.result);
       openSnackbar({
-        message: 'Post updated',
+        message: t('sites.postUpdated'),
         messageBarType: MessageBarType.success,
       });
     }
@@ -67,7 +69,7 @@ const PostSettingsDialog: React.FC<IPostSettingsDialogProps> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Update post',
+        title: t('sites.updatePost'),
       }}
       modalProps={{
         styles: {main: {maxWidth: 450}},
@@ -86,31 +88,31 @@ const PostSettingsDialog: React.FC<IPostSettingsDialogProps> = ({
           )}
           <ControlledTextField
             rules={{
-              required: 'Name is required',
+              required: t('message.name.is.Required') as string,
             }}
             name="name"
-            label="Name"
+            label={t("common.name")}
             control={control}
           />
           <ControlledTextField
             name="slug"
-            label="Slug"
+            label={t("common.slug")}
             control={control}
             rules={{
-              required: 'Slug is required',
+              required: t('message.slug.isRequired') as string,
               pattern: {
                 value: slugRegex,
                 message: slugRegexMessage,
               }
             }}
           />
-          <TagsPickerControl label="Tags" name="tags" control={control}/>
+          <TagsPickerControl label={t("app.tags")} name="tags" control={control}/>
         </Stack>
         <DialogFooter>
-          <DefaultButton onClick={onDismiss} text="Cancel"/>
+          <DefaultButton onClick={onDismiss} text={t("command.cancel")}/>
           <PrimaryButton
             type="submit"
-            text="Update"
+            text={t("command.update")}
             disabled={updatePost?.loading}
           />
         </DialogFooter>

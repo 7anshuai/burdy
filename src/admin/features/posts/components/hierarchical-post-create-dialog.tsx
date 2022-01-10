@@ -26,6 +26,7 @@ import {Control, useForm} from 'react-hook-form';
 import slugify from 'slugify';
 import {slugRegex, slugRegexMessage} from '@shared/validators';
 import {IContentType} from "@shared/interfaces/model";
+import { useTranslation } from 'react-i18next';
 
 interface ISelectParentProps {
   control: Control;
@@ -33,11 +34,12 @@ interface ISelectParentProps {
 
 const SelectParentImpl: React.FC<ISelectParentProps> = ({control}) => {
   const {getPosts} = usePosts();
+  const { t } = useTranslation();
   const pages = useMemo(() => {
     return [
       {
         key: null,
-        text: '-- None --',
+        text: `-- ${t('common.none')} --`,
       },
       ...(getPosts?.result || []).map((page) => ({
         key: page.id,
@@ -56,8 +58,8 @@ const SelectParentImpl: React.FC<ISelectParentProps> = ({control}) => {
     <ControlledDropdown
       disabled={getPosts?.loading}
       name="parentId"
-      label="Parent"
-      placeHolder="Select parent"
+      label={t("sites.parent")}
+      placeHolder={t("sites.selectParent")}
       control={control}
       defaultValue={null}
       options={pages}
@@ -86,6 +88,7 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
   const {getContentTypes} = useContentTypes();
   const [pageContentTypes, setPageContentTypes] = useState<IContentType[]>([]);
   const [postContentTypes, setPostContentTypes] = useState<IContentType[]>([]);
+  const { t } = useTranslation();
 
   const {control, handleSubmit, reset, formState, watch, setValue} = useForm({
     mode: 'all',
@@ -138,7 +141,7 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Create post container',
+        title: t('sites.createPostContainer'),
       }}
       modalProps={{
         styles: {main: {maxWidth: 500}},
@@ -157,18 +160,18 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
           )}
           <ControlledTextField
             rules={{
-              required: 'Name is required',
+              required: t('message.name.isRequired') as string,
             }}
             name="name"
-            label="Name"
+            label={t("common.name")}
             control={control}
           />
           <ControlledTextField
             name="slug"
-            label="Slug"
+            label={t("common.slug")}
             control={control}
             rules={{
-              required: 'Slug is required',
+              required: t('message.slug.isRequired') as string,
               pattern: {
                 value: slugRegex,
                 message: slugRegexMessage,
@@ -178,12 +181,12 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
           <ControlledDropdown
             disabled={getContentTypes?.loading}
             name="contentTypeId"
-            label="Page Type"
+            label={t("common.pageType")}
             control={control}
             rules={{
-              required: 'Page type is required',
+              required: t('message.pageType.isRequired') as string,
             }}
-            placeHolder="Select Page Type"
+            placeHolder={t("sites.selectPageType")}
             options={pageContentTypes.map((contentType) => ({
               key: contentType.id,
               text: contentType.name,
@@ -192,12 +195,12 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
           <ControlledDropdown
             disabled={getContentTypes?.loading}
             name="meta.postContentTypeId"
-            label="Post Type"
+            label={t("common.postType")}
             control={control}
             rules={{
-              required: 'Post type is required',
+              required: t('message.postType.isRequired') as string,
             }}
-            placeHolder="Select Post Type"
+            placeHolder={t("sites.selectPostType")}
             options={postContentTypes.map((contentType) => ({
               key: contentType.id,
               text: contentType.name,
@@ -206,10 +209,10 @@ const CreateHierarchicalPostDialog: React.FC<ICreateHierarchicalPostProps> = ({
           <SelectParent control={control}/>
         </Stack>
         <DialogFooter>
-          <DefaultButton onClick={onDismiss} text="Cancel"/>
+          <DefaultButton onClick={onDismiss} text={t("command.cancel")}/>
           <PrimaryButton
             type="submit"
-            text="Create"
+            text={t("command.create")}
             disabled={createPost?.loading || getContentTypes?.loading}
           />
         </DialogFooter>

@@ -14,6 +14,7 @@ import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import slugify from 'slugify';
 import {slugRegex, slugRegexMessage} from '@shared/validators';
+import { useTranslation } from 'react-i18next';
 
 interface IPostCreateDialogProps {
   isOpen?: boolean;
@@ -27,6 +28,7 @@ const PostCreateDialog: React.FC<IPostCreateDialogProps> = ({
                                                               onCreated,
                                                             }) => {
   const {createPost, getOneContentType} = usePosts();
+  const { t } = useTranslation();
 
   const {control, handleSubmit, reset, setValue, formState, watch} = useForm({
     mode: 'all',
@@ -87,20 +89,20 @@ const PostCreateDialog: React.FC<IPostCreateDialogProps> = ({
           )}
           <ControlledTextField
             rules={{
-              required: 'Name is required',
+              required: t('message.name.isRequired') as string,
             }}
             name="name"
-            label="Name"
+            label={t("common.name")}
             data-cy="post-create-name"
             control={control}
           />
           <ControlledTextField
             name="slug"
-            label="Slug"
+            label={t("common.slug")}
             data-cy="post-create-slug"
             control={control}
             rules={{
-              required: 'Slug is required',
+              required: t('message.slug.isRequired') as string,
               pattern: {
                 value: slugRegex,
                 message: slugRegexMessage,
@@ -109,10 +111,10 @@ const PostCreateDialog: React.FC<IPostCreateDialogProps> = ({
           />
         </Stack>
         <DialogFooter>
-          <DefaultButton data-cy="post-create-cancel" onClick={onDismiss} text="Cancel"/>
+          <DefaultButton data-cy="post-create-cancel" onClick={onDismiss} text={t("command.cancel")}/>
           <PrimaryButton
             type="submit"
-            text="Create"
+            text={t("command.create")}
             data-cy="post-create-submit"
             disabled={createPost?.loading}
           />
