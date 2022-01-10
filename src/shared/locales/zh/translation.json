@@ -52,6 +52,7 @@
     "cancel": "取消",
     "close": "关闭",
     "confirm": "确定",
+    "copy": "复制",
     "create": "创建",
     "new": "新建",
     "edit": "编辑",
@@ -79,11 +80,25 @@
     "update": "更新"
   },
   "common": {
+    "Author": "作者",
     "createdAt": "创建时间",
     "updatedAt": "更新时间",
     "name": "名称",
-    "slug": "Slug",
-    "status": "状态"
+    "slug": "路径名",
+    "status": "状态",
+    "token": "令牌",
+    "none": "无",
+    "page": "页面",
+    "pageType": "页面类型",
+    "postType": "文章类型",
+    "fragment": "片段",
+    "folder": "文件夹",
+    "hierarchicalPosts": "层级关系",
+    "publishedAt": "发布于",
+    "publishedFrom": "发布人",
+    "publishedUntil": "发布至",
+    "lastUpdate": "最后更新",
+    "updatedBy": "更新人"
   },
   "message": {
     "areYouSure": "您确定要继续吗？",
@@ -95,12 +110,36 @@
       "isRequired": "名称为必填项"
     },
     "slug": {
-      "isRequired": "Slug 为必填项"
+      "isRequired": "路径名为必填项"
+    },
+    "contentType": {
+      "isRequired": "内容类型为必填项"
+    },
+    "pageType": {
+      "isRequired": "页面类型为必填项"
+    },
+    "postType": {
+      "isRequired": "文章类型为必填项"
     },
     "pageError": "页面 {{name}} 发生错误。请检查控制台获得更多信息。",
-    "settingsUpdated": "配置已更新"
+    "postUpdated": "内容已更新",
+    "settingsUpdated": "配置已更新",
+    "invalidJSONType": "不正确的 JSON 格式"
   },
-  "sites": {},
+  "sites": {
+    "contentType": "内容类型",
+    "createFragment": "创建片段",
+    "createFolder": "创建文件夹",
+    "selectParent": "选择父级",
+    "parent": "父级",
+    "search": "搜索文章...",
+    "createPage": "创建页面",
+    "createPostContainer": "创建文章容器",
+    "selectPageType": "选择页面类型",
+    "selectPostType": "选择文章类型",
+    "selectContentType": "选择内容类型",
+    "updatePost": "更新内容"
+  },
   "settings": {
     "general": {
       "title": "通用设置",
@@ -145,7 +184,9 @@
     "avatar": "头像",
     "firstName": "姓",
     "lastName": "名",
-    "displayName": "显示名称"
+    "displayName": "显示名称",
+    "email": "邮箱",
+    "password": "密码"
   },
   "users": {
     "account": "账户",

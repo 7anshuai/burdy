@@ -85,6 +85,7 @@ const FragmentCreateDialog: React.FC<IFragmentCreateDialogProps> = ({
                                                                     }) => {
   const {createPost} = usePosts();
   const {getContentTypes} = useContentTypes();
+  const { t } = useTranslation();
 
   const {control, handleSubmit, reset, formState, watch, setValue} = useForm({
     mode: 'all',
@@ -131,7 +132,7 @@ const FragmentCreateDialog: React.FC<IFragmentCreateDialogProps> = ({
       onDismiss={onDismiss}
       dialogContentProps={{
         type: DialogType.close,
-        title: 'Create fragment',
+        title: t('sites.createFragment'),
       }}
       modalProps={{
         styles: {main: {maxWidth: 500}},
@@ -150,18 +151,18 @@ const FragmentCreateDialog: React.FC<IFragmentCreateDialogProps> = ({
           )}
           <ControlledTextField
             rules={{
-              required: 'Name is required',
+              required: t('message.name.isRequired') as string,
             }}
             name="name"
-            label="Name"
+            label={t("common.name")}
             control={control}
           />
           <ControlledTextField
             name="slug"
-            label="Slug"
+            label={t("common.slug")}
             control={control}
             rules={{
-              required: 'Slug is required',
+              required: t('common.slug.isRequired') as string,
               pattern: {
                 value: slugRegex,
                 message: slugRegexMessage,
@@ -171,12 +172,12 @@ const FragmentCreateDialog: React.FC<IFragmentCreateDialogProps> = ({
           <ControlledDropdown
             disabled={getContentTypes?.loading}
             name="contentTypeId"
-            label="Content Type"
+            label={t("sites.contentType")}
             control={control}
             rules={{
-              required: 'Content type is required',
+              required: t('message.contentType.is.Required') as string,
             }}
-            placeHolder="Select Content Type"
+            placeHolder={t("sites.selectContentType")}
             options={(getContentTypes?.result ?? []).map((contentType) => ({
               key: contentType.id,
               text: contentType.name,
@@ -185,10 +186,10 @@ const FragmentCreateDialog: React.FC<IFragmentCreateDialogProps> = ({
           <SelectParent control={control}/>
         </Stack>
         <DialogFooter>
-          <DefaultButton onClick={onDismiss} text="Cancel"/>
+          <DefaultButton onClick={onDismiss} text={t("command.cancel")}/>
           <PrimaryButton
             type="submit"
-            text="Create"
+            text={t("command.create")}
             disabled={createPost?.loading || getContentTypes?.loading}
           />
         </DialogFooter>
