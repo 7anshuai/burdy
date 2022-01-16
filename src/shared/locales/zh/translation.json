@@ -77,6 +77,8 @@
     "download": "下载",
     "export": "导出",
     "import": "导入",
+    "insert": "插入",
+    "target": "目标",
     "update": "更新"
   },
   "common": {
@@ -88,6 +90,7 @@
     "status": "状态",
     "token": "令牌",
     "none": "无",
+    "noItems": "没有可显示的项目",
     "page": "页面",
     "pageType": "页面类型",
     "postType": "文章类型",
@@ -121,10 +124,12 @@
     "postType": {
       "isRequired": "文章类型为必填项"
     },
+    "error": "发生错误！请检查控制台获得更多信息。",
     "pageError": "页面 {{name}} 发生错误。请检查控制台获得更多信息。",
     "postUpdated": "内容已更新",
     "settingsUpdated": "配置已更新",
-    "invalidJSONType": "不正确的 JSON 格式"
+    "invalidJSONType": "不正确的 JSON 格式",
+    "emailNotFound": "邮箱账号不存在"
   },
   "sites": {
     "contentType": "内容类型",

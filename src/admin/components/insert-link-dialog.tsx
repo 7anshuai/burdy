@@ -9,6 +9,7 @@ import {
 } from '@fluentui/react';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 interface IInsertLinkDialogProps {
   isOpen?: boolean;
@@ -27,6 +28,7 @@ const InsertLinkDialog: React.FC<IInsertLinkDialogProps> = ({
       target: '_self',
     }
   });
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -54,7 +56,7 @@ const InsertLinkDialog: React.FC<IInsertLinkDialogProps> = ({
         }}
       >
         <ControlledTextField name="url" label="URL" control={control} />
-        <ControlledCombobox control={control} name="target" label="Target" options={[{
+        <ControlledCombobox control={control} name="target" label={t("command.target")} options={[{
           key: '_self',
           text: 'Self',
         }, {
@@ -63,14 +65,14 @@ const InsertLinkDialog: React.FC<IInsertLinkDialogProps> = ({
         }]} />
       </Stack>
       <DialogFooter>
-        <DefaultButton onClick={onDismiss} text="Cancel" />
+        <DefaultButton onClick={onDismiss} text={t("command.cancel")} />
         <PrimaryButton
           onClick={() => {
             handleSubmit((data) => {
               onInsert(data);
             })();
           }}
-          text="Insert"
+          text={t("command.insert")}
         />
       </DialogFooter>
     </Dialog>

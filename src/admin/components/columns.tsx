@@ -14,6 +14,7 @@ import React, { useMemo } from 'react';
 import Empty from './empty';
 import { ColumnsViewContextProvider, useColumns } from './columns.context';
 import {useHistory} from "react-router";
+import { useTranslation } from 'react-i18next';
 
 const theme = getTheme();
 
@@ -238,6 +239,7 @@ const Column: React.FC<ColumnProps> = ({ items }) => {
 
 const ColumnsViewImpl: React.FC<any> = ({ loading }) => {
   const { hierarchical, finished } = useColumns();
+  const { t } = useTranslation();
   return (
     <div className={styles.columnsView} data-cy="columns-view">
       {(loading || !finished) && (
@@ -267,7 +269,7 @@ const ColumnsViewImpl: React.FC<any> = ({ loading }) => {
       )}
       {!loading && finished && !hierarchical?.length && (
         <div style={{ flex: 1 }}>
-          <Empty compact title="No items" />
+          <Empty compact title={t("common.noItems")} />
         </div>
       )}
     </div>
