@@ -15,6 +15,7 @@ import { ControlledTextField } from '@admin/components/rhf-components';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Validators from '@shared/validators';
 import logo from '../../../assets/logo.svg';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -67,6 +68,7 @@ const formSchema = yup.object({
 
 const Welcome: React.FC<any> = () => {
   const styles = useStyles();
+  const { t } = useTranslation();
   const { init } = useAuth();
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
@@ -98,10 +100,10 @@ const Welcome: React.FC<any> = () => {
         />
         <Stack tokens={{ childrenGap: 8, padding: '0 0 16px' }}>
           <Text variant='xLargePlus' block>
-            Welcome
+            {t('welcome.title')}
           </Text>
           <Text variant='medium' block>
-            Please fill out the following information to begin.
+            {t('welcome.desc')}
           </Text>
         </Stack>
         {init.error?.message && (
@@ -121,7 +123,7 @@ const Welcome: React.FC<any> = () => {
                   control={control}
                   name='firstName'
                   type='text'
-                  label='First Name'
+                  label={t('user.firstName')}
                   autoComplete='off'
                   required
                   data-cy="welcome-firstName"
@@ -133,7 +135,7 @@ const Welcome: React.FC<any> = () => {
                   control={control}
                   name='lastName'
                   type='text'
-                  label='Last Name'
+                  label={t('user.lastName')}
                   autoComplete='off'
                   required
                   data-cy="welcome-lastName"
@@ -144,7 +146,7 @@ const Welcome: React.FC<any> = () => {
               control={control}
               name='email'
               type='email'
-              label='Email'
+              label={t('user.email')}
               required
               data-cy="welcome-email"
             />
@@ -152,7 +154,7 @@ const Welcome: React.FC<any> = () => {
               control={control}
               name='password'
               type='password'
-              label='Password'
+              label={t('user.password')}
               canRevealPassword
               required
               data-cy="welcome-password"
@@ -164,7 +166,7 @@ const Welcome: React.FC<any> = () => {
                 disabled={init.loading}
                 data-cy="welcome-submit"
               >
-                Get Started
+                {t('welcome.getStarted')}
               </PrimaryButton>
             </Stack.Item>
           </Stack>

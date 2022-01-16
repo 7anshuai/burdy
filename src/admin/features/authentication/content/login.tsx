@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ControlledTextField } from '@admin/components/rhf-components';
 import logo from '../../../assets/logo.svg';
+import i18next from 'i18next';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -61,8 +62,8 @@ const useStyles = makeStyles({
 });
 
 const formSchema = yup.object({
-  email: yup.string().email().required().label('Email'),
-  password: yup.string().min(6).label('Password'),
+  email: yup.string().email().required().label(i18next.t('auth.email')),
+  password: yup.string().min(6).label(i18next.t('auth.password')),
 });
 
 const LogIn: React.FC<any> = () => {

@@ -77,6 +77,8 @@
     "download": "Download",
     "export": "Export",
     "import": "Import",
+    "insert": "Insert",
+    "target": "Target",
     "update": "Update"
   },
   "common": {
@@ -91,6 +93,7 @@
     "status": "Status",
     "token": "Token",
     "none": "None",
+    "noItems": "No items",
     "page_one": "Page",
     "page_other": "Pages",
     "pageType": "Page Type",
@@ -126,10 +129,12 @@
     "postType": {
       "isRequired": "Post type is required"
     },
+    "error": "Error! please check console for more details.",
     "pageError": "Page {{name}} errored. Please check console for more details.",
     "postUpdated": "Post updated",
     "settingsUpdated": "Settings updated",
-    "invalidJSONType": "Invalid JSON type"
+    "invalidJSONType": "Invalid JSON type",
+    "emailNotFound": "Email not found."
   },
   "sites": {
     "contentType": "Content Type",
@@ -211,5 +216,10 @@
     "selectUsers": "Select Users",
     "userCreated": "User \"{{email}}\" successfully created.",
     "userUpdated": "User \"{{email}}\" successfully updated."
+  },
+  "welcome": {
+    "title": "Welcome",
+    "desc": "Please fill out the following information to begin.",
+    "getStarted": "Get Started"
   }
 }

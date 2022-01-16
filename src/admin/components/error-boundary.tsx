@@ -1,5 +1,6 @@
 import React from 'react';
 import { MessageBar, MessageBarType } from '@fluentui/react';
+import i18next from 'i18next';
 
 export interface IErrorBoundaryProps {
   message?: string;
@@ -24,7 +25,7 @@ class ErrorBoundary extends React.Component<IErrorBoundaryProps> {
     // @ts-ignore
     if (this.state.hasError) {
       return <MessageBar messageBarType={MessageBarType.error}>
-        {this.props?.message || 'Error!, please check console for more details.'}
+        {this.props?.message || i18next.t('message.error')}
       </MessageBar>;
     }
 

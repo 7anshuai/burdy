@@ -68,7 +68,7 @@ app.post(
     await req.validate({
       email: Validators.email().test(
         'email-not-found',
-        'Email not found.',
+        req.t('message.emailNotFound'),
         () => user !== undefined
       ),
       password: Validators.password(),
