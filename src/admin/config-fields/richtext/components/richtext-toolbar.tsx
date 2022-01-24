@@ -190,17 +190,25 @@ const ActionButtons: React.FC = () => {
     setSelection(null);
   }
 
-  const createImage = (image: IAsset) => {
+  const createAsset = (asset: IAsset) => {
     const contentState = editorState.getCurrentContent();
 
+    let type = 'IMAGE';
+
+    if (asset.mimeType.startsWith('audio')) {
+      type = 'AUDIO';
+    } else if (asset.mimeType.startsWith('video')) {
+      type = 'VIDEO';
+    }
+
     const contentStateWithEntity = contentState.createEntity(
-      'IMAGE',
+      type,
       'IMMUTABLE',
       {
-        npath: image.npath,
-        name: image.name,
-        mimeType: image.mimeType,
-        meta: image.meta,
+        npath: asset.npath,
+        name: asset.name,
+        mimeType: asset.mimeType,
+        meta: asset.meta,
         caption: '',
         align: 'center'
       }
@@ -391,7 +399,7 @@ const ActionButtons: React.FC = () => {
       </div>
       <AssetsSelectPanel
         isOpen={assetOpen}
-        mimeTypes={['image/jpeg', 'image/webp', 'image/png', 'image/gif', 'image/svg+xml']}
+        mimeTypes={['image/jpeg', 'image/webp', 'image/png', 'image/gif', 'image/svg+xml', 'audio/mp3', 'video/mp4']}
         selectionMode={SelectionMode.single}
         onDismiss={() => {
           setAssetOpen(false);
@@ -399,7 +407,7 @@ const ActionButtons: React.FC = () => {
         }}
         onSubmit={(asset: IAsset[]) => {
           if (asset[0]) {
-            createImage(asset[0]);
+            createAsset(asset[0]);
           }
           setAssetOpen(false);
         }}

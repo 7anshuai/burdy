@@ -12,7 +12,7 @@ import {
 } from 'draft-js';
 import { Label, makeStyles } from '@fluentui/react';
 import RichtextToolbar from '@admin/config-fields/richtext/components/richtext-toolbar';
-import DraftImageBlock from '@admin/config-fields/richtext/blocks/draft-image-block';
+import DraftAssetBlock from '@admin/config-fields/richtext/blocks/draft-asset-block';
 import DraftAceBlock from '@admin/config-fields/richtext/blocks/draft-ace-block';
 import { useDebouncedCallback } from 'use-debounce';
 import DraftComponentBlock from '@admin/config-fields/richtext/blocks/draft-component-block';
@@ -260,9 +260,9 @@ const RichText: React.FC<IDynamicTextProps> = ({ field, name, onChange }) => {
               const entity = block.getEntityAt(0);
               if (!entity) return null;
               const type = contentState.getEntity(entity).getType();
-              if (type === 'IMAGE') {
+              if (['AUDIO', 'IMAGE', 'VIDEO'].includes(type)) {
                 return {
-                  component: DraftImageBlock,
+                  component: DraftAssetBlock,
                   editable: false,
                 };
               }
