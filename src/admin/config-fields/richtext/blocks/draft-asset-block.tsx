@@ -52,7 +52,7 @@ const DraftImageBlock = (props: any) => {
   const contentBlock = props.block as ContentBlock;
   const selectionState = props.selection as SelectionState;
   const entityKey = contentBlock.getEntityAt(0);
-  const {npath, caption, align} = contentState.getEntity(entityKey).getData();
+  const {mimeType, npath, caption, align} = contentState.getEntity(entityKey).getData();
   const {setEditorProps, editorProps, setEditorState, editorState, forceUpdate} = useRichtext();
   const [captionValue, setCaptionValue] = useState<string>(caption ?? '');
   const [alignment, setAlignment] = useState(align ?? 'center');
@@ -146,23 +146,55 @@ const DraftImageBlock = (props: any) => {
   ], [theme, alignment, contentState, selectionState, setEditorState, editorState]);
 
   return (
-    <div className={classNames(classes.container, {
-      left: alignment === 'left',
-      right: alignment === 'right'
-    })}>
-      <img
-        src={`/api/assets/single?npath=${npath}`} className={classes.image} alt=""
-        onContextMenu={(e) => {
-          setContextMenuTarget(e.nativeEvent)
-          e.preventDefault();
-        }}
-      />
+    <div
+      className={classNames(classes.container, {
+        left: alignment === 'left',
+        right: alignment === 'right',
+      })}
+    >
+      {mimeType.startsWith('audio') && (
+        <audio
+          controls
+          src={`/api/assets/single?npath=${npath}`}
+          className={classes.image}
+          onContextMenu={(e) => {
+            setContextMenuTarget(e.nativeEvent);
+            e.preventDefault();
+          }}
+        >
+          <track default kind="captions" src={captionValue} />
+        </audio>
+      )}
+      {mimeType.startsWith('video') && (
+        <video
+          controls
+          src={`/api/assets/single?npath=${npath}`}
+          className={classes.image}
+          onContextMenu={(e) => {
+            setContextMenuTarget(e.nativeEvent);
+            e.preventDefault();
+          }}
+        >
+          <track default kind="captions" src={captionValue} />
+        </video>
+      )}
+      {mimeType.startsWith('image') && (
+        <img
+          src={`/api/assets/single?npath=${npath}`}
+          className={classes.image}
+          alt=""
+          onContextMenu={(e) => {
+            setContextMenuTarget(e.nativeEvent);
+            e.preventDefault();
+          }}
+        />
+      )}
       <TextField
         className={classes.captionField}
         onFocus={() => setReadOnly(true)}
         onBlur={() => setReadOnly(false)}
         value={captionValue}
-        onChange={e => setCaptionValue(e.currentTarget.value)}
+        onChange={(e) => setCaptionValue(e.currentTarget.value)}
         placeholder="Caption"
         name="caption"
         autoComplete="off"
