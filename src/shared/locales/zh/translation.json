@@ -56,10 +56,12 @@
     "create": "创建",
     "new": "新建",
     "edit": "编辑",
+    "editContentType": "编辑内容类型",
     "details": "详情",
     "delete": "删除",
     "duplicate": "复制",
     "generate": "生成",
+    "history": "历史",
     "open": "打开",
     "preview": "预览",
     "publish": "发布",
@@ -72,6 +74,7 @@
     "restore": "恢复",
     "save": "保存",
     "select": "选择",
+    "selectVersion": "选择版本",
     "settings": "设置",
     "upload": "上传",
     "download": "下载",
@@ -102,6 +105,13 @@
     "publishedUntil": "发布至",
     "lastUpdate": "最后更新",
     "updatedBy": "更新人"
+  },
+  "editor": {
+    "headless": "文本",
+    "preview": "可视化",
+    "desktop": "桌面",
+    "tablet": "平板",
+    "mobile": "手机"
   },
   "message": {
     "areYouSure": "您确定要继续吗？",
@@ -186,6 +196,7 @@
     "noResult": "未找到颜色标签"
   },
   "user": {
+    "account": "账户",
     "avatar": "头像",
     "firstName": "姓",
     "lastName": "名",

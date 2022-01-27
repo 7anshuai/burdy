@@ -511,7 +511,7 @@ const UserEdit = () => {
           <Separator />
           <StatusBar controller={users.update} />
           <Pivot style={{ marginTop: 12 }} data-cy="users-edit-tabs">
-            <PivotItem className={styles.content} headerText="Account">
+            <PivotItem className={styles.content} headerText={t("user.account")}>
               <Stack tokens={{ childrenGap: 12 }}>
                 <Stack horizontal tokens={{ childrenGap: 12 }}>
                   <Stack.Item grow={1}>

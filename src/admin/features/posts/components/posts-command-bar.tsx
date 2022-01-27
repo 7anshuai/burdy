@@ -12,6 +12,7 @@ import {usePosts} from '../context/posts.context';
 import { copyToClipboard, testPaths } from '@admin/helpers/utility';
 import { useSnackbar } from '@admin/context/snackbar';
 import { useAllowedPaths } from '@admin/helpers/hooks';
+import i18next from 'i18next';
 
 const PostsCommandBar = () => {
   const history = useHistory();
@@ -48,7 +49,7 @@ const PostsCommandBar = () => {
       if (additionalData?.parentId) {
         commandBarItems.push({
           key: 'back',
-          text: 'Back',
+          text: i18next.t('command.back'),
           iconProps: {iconName: 'Back'},
           onClick: () => {
             history.push(`/sites?id=${additionalData?.parentId}`)
@@ -59,7 +60,7 @@ const PostsCommandBar = () => {
       commandBarItems.push(...filterPermissions([
         {
           key: 'newItem',
-          text: 'New',
+          text: i18next.t('command.new'),
           'data-cy': 'post-commandBar-new',
           iconProps: {iconName: 'Add'},
           permissions: ['sites_create'],
@@ -69,7 +70,7 @@ const PostsCommandBar = () => {
         },
         testPaths(allowedPaths, selectedPosts?.[0]?.slugPath) ? {
             key: 'edit',
-            text: 'Edit',
+            text: i18next.t('command.edit'),
             disabled:
               selectedPosts?.length !== 1,
             iconProps: { iconName: 'Edit' },
@@ -79,7 +80,7 @@ const PostsCommandBar = () => {
               items: [
                 {
                   key: 'preview',
-                  text: 'Preview',
+                  text: i18next.t('command.preview'),
                   onClick: () => {
                     history.push(
                       `/sites/editor/${selectedPosts?.[0]?.id}?editor=preview`
@@ -93,7 +94,7 @@ const PostsCommandBar = () => {
             },
           } : {
             key: 'edit',
-            text: 'Edit',
+            text: i18next.t('command.edit'),
             disabled:
               selectedPosts?.length !== 1,
             iconProps: { iconName: 'Edit' },
@@ -104,7 +105,7 @@ const PostsCommandBar = () => {
           },
         {
           key: 'settings',
-          text: 'Settings',
+          text: i18next.t('command.settings'),
           'data-cy': 'post-commandBar-settings',
           disabled:
             selectedPosts?.length !== 1 || selectedPosts?.[0]?.type === 'site',
@@ -116,7 +117,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'copyItem',
-          text: 'Duplicate',
+          text: i18next.t('command.duplicate'),
           'data-cy': 'post-commandBar-duplicate',
           disabled:
             selectedPosts?.length !== 1,
@@ -128,7 +129,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'delete',
-          text: 'Delete',
+          text: i18next.t('command.delete'),
           'data-cy': 'post-commandBar-delete',
           disabled: selectedPosts?.length === 0,
           iconProps: {iconName: 'Delete'},
@@ -139,7 +140,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'publish',
-          text: 'Publish',
+          text: i18next.t('command.publish'),
           'data-cy': 'post-commandBar-publish',
           disabled: selectedPosts?.length === 0,
           iconProps: {iconName: 'WebPublish'},
@@ -150,7 +151,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'unpublish',
-          text: 'Unpublish',
+          text: i18next.t('command.unpublish'),
           'data-cy': 'post-commandBar-unpublish',
           disabled: selectedPosts?.length === 0,
           iconProps: {iconName: 'UnpublishContent'},
@@ -161,7 +162,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'copyUrl',
-          text: 'Copy API URL',
+          text: i18next.t('command.copyApiUrl'),
           iconProps: { iconName: 'ClipboardList' },
           disabled:
             selectedPosts?.length === 0,
@@ -171,7 +172,7 @@ const PostsCommandBar = () => {
               `${window.location.origin}/api/content/${selectedPost.slugPath}`
             );
             snackbar.openSnackbar({
-              message: 'Successfully copied URL to clipboard!',
+              message: i18next.t('message.copyApiUrlSuccess'),
               messageBarType: MessageBarType.success,
               duration: 1000,
             });
@@ -179,7 +180,7 @@ const PostsCommandBar = () => {
         },
         {
           key: 'refresh',
-          text: 'Refresh',
+          text: i18next.t('command.refresh'),
           'data-cy': 'post-commandBar-refresh',
           iconProps: {iconName: 'Refresh'},
           onClick: () => {
@@ -199,7 +200,7 @@ const PostsCommandBar = () => {
         key: 'search',
         onRenderIcon: () => (
           <SearchBox
-            placeholder="Search posts..."
+            placeholder={i18next.t("sites.search")}
             onChange={(event, newValue) => {
               debounced(newValue);
             }}

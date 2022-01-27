@@ -10,6 +10,7 @@ import {
 import React, { useEffect, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router';
 import queryString from 'query-string';
+import i18next from 'i18next';
 import { usePosts } from '../../posts/context/posts.context';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import { copyToClipboard } from '@admin/helpers/utility';
@@ -58,7 +59,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
     const items: ICommandBarItemProps[] = [
       {
         key: 'back',
-        text: 'Back',
+        text: i18next.t('command.back'),
         'data-cy': 'editor-commandBar-back',
         iconProps: { iconName: 'Back' },
         onClick: () => {
@@ -77,37 +78,40 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
     if (enableEditor && !loading) {
       items.push({
         key: 'switchEditor',
-        text: editor === 'preview' ? 'Preview' : 'Headless',
-        iconProps: {iconName: 'ChangeEntitlements'},
+        text:
+          editor === 'preview'
+            ? i18next.t('editor.preview')
+            : i18next.t('editor.headless'),
+        iconProps: { iconName: 'ChangeEntitlements' },
         subMenuProps: {
           items: [
             {
               key: 'headless',
-              text: 'Headless',
+              text: i18next.t('editor.headless'),
               onClick: () => {
                 history.push({
                   search: queryString.stringify({
                     ...(queryString.parse(location.search) || {}),
-                    editor: undefined
-                  })
+                    editor: undefined,
+                  }),
                 });
-              }
+              },
             },
             {
               key: 'preview',
-              text: 'Preview',
+              text: i18next.t('editor.preview'),
               onClick: () => {
                 history.push({
                   search: queryString.stringify({
                     ...(queryString.parse(location.search) || {}),
-                    editor: 'preview'
-                  })
+                    editor: 'preview',
+                  }),
                 });
-              }
-            }
-          ]
-        }
-      })
+              },
+            },
+          ],
+        },
+      });
     }
 
     if (enableEditor && editor === 'preview' && !loading) {
@@ -123,7 +127,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
             >
               <IconButton
                 iconProps={{ iconName: 'TVMonitor' }}
-                title="Desktop"
+                title={i18next.t("editor.desktop")}
                 ariaLabel="Desktop"
                 checked={!device || device === 'desktop'}
                 onClick={() => {
@@ -132,7 +136,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
               />
               <IconButton
                 iconProps={{ iconName: 'Tablet' }}
-                title="Tablet"
+                title={i18next.t("editor.tablet")}
                 ariaLabel="Tablet"
                 checked={device === 'tablet'}
                 onClick={() => {
@@ -141,7 +145,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
               />
               <IconButton
                 iconProps={{ iconName: 'CellPhone' }}
-                title="Mobile"
+                title={i18next.t("editor.mobile")}
                 ariaLabel="Mobile"
                 checked={device === 'mobile'}
                 onClick={() => {
@@ -196,8 +200,10 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
         {
           key: 'history',
           text: getVersionsCount?.result
-            ? `History (${getVersionsCount?.result?.count})`
-            : 'History',
+            ? `${i18next.t('command.history')} (${
+                getVersionsCount?.result?.count
+              })`
+            : i18next.t('command.history'),
           iconProps: { iconName: 'History' },
           'data-cy': 'editor-commandBar-history',
           onClick: () => {
@@ -206,7 +212,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
         },
         {
           key: 'restore',
-          text: 'Restore',
+          text: i18next.t('command.restore'),
           'data-cy': 'editor-commandBar-restore',
           iconProps: { iconName: 'Edit' },
           onClick: () => {
@@ -215,7 +221,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
         },
         {
           key: 'delete',
-          text: 'Delete',
+          text: i18next.t('command.delete'),
           'data-cy': 'editor-commandBar-delete',
           iconProps: { iconName: 'Delete' },
           onClick: () => {
@@ -224,7 +230,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
         },
         {
           key: 'cancel',
-          text: 'Cancel',
+          text: i18next.t('command.cancel'),
           'data-cy': 'editor-commandBar-cancel',
           iconProps: { iconName: 'Cancel' },
           onClick: () => {
@@ -232,8 +238,8 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
               search: queryString.stringify({
                 ...(queryString.parse(location.search) || {}),
                 versionId: undefined,
-                action: undefined
-              })
+                action: undefined,
+              }),
             });
           },
         },
@@ -242,14 +248,14 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
     const items = filterPermissions([
       {
         key: 'copyUrl',
-        text: 'Copy API URL',
+        text: i18next.t('command.copyApiUrl'),
         iconProps: { iconName: 'ClipboardList' },
         onClick: () => {
           copyToClipboard(
             `${window.location.origin}/api/content/${post.slugPath}`
           );
           snackbar.openSnackbar({
-            message: 'Successfully copied URL to clipboard!',
+            message: i18next.t('message.copyApiUrlSuccess'),
             messageBarType: MessageBarType.success,
             duration: 3000,
           });
@@ -258,8 +264,10 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
       {
         key: 'history',
         text: getVersionsCount?.result
-          ? `History (${getVersionsCount?.result?.count})`
-          : 'History',
+          ? `${i18next.t('command.history')} (${
+              getVersionsCount?.result?.count
+            })`
+          : i18next.t('command.history'),
         'data-cy': 'editor-commandBar-history',
         disabled: apiLoading,
         iconProps: { iconName: 'History' },
@@ -269,7 +277,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
       },
       {
         key: 'contentType',
-        text: 'Edit Content Type',
+        text: i18next.t('command.editContentType'),
         'data-cy': 'editor-commandBar-editContentType',
         iconProps: { iconName: 'Edit' },
         disabled: apiLoading,
@@ -280,7 +288,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
       },
       {
         key: 'settings',
-        text: 'Settings',
+        text: i18next.t('command.settings'),
         'data-cy': 'editor-commandBar-settings',
         iconProps: { iconName: 'Settings' },
         disabled: apiLoading,
@@ -290,7 +298,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
       },
       {
         key: 'publish',
-        text: 'Publish',
+        text: i18next.t('command.publish'),
         'data-cy': 'editor-commandBar-publish',
         iconProps: { iconName: 'WebPublish' },
         disabled: apiLoading,
@@ -303,7 +311,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
         'data-cy': 'editor-commandBar-save',
         iconProps: { iconName: 'Save' },
         disabled: apiLoading,
-        text: 'Save',
+        text: i18next.t('command.save'),
         onClick: () => {
           handleSubmit();
         },
@@ -312,7 +320,7 @@ const EditorCommandBar: React.FC<EditorCommandBarProps> = ({
     if (post?.publishedAt) {
       items.splice(2, 0, {
         key: 'unpublish',
-        text: 'Unpublish',
+        text: i18next.t('command.unpublish'),
         'data-cy': 'editor-commandBar-unpublish',
         iconProps: { iconName: 'UnpublishContent' },
         disabled: apiLoading,
