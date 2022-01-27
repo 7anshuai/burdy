@@ -57,10 +57,12 @@
     "confirm": "Confirm",
     "new": "New",
     "edit": "Edit",
+    "editContentType": "Edit Content Type",
     "details": "Details",
     "delete": "Delete",
     "duplicate": "Duplicate",
     "generate": "Generate",
+    "history": "History",
     "open": "Open",
     "preview": "Preview",
     "publish": "Publish",
@@ -72,6 +74,8 @@
     "rename": "Rename",
     "restore": "Restore",
     "save": "Save",
+    "select": "Select",
+    "selectVersion": "Select version",
     "settings": "Settings",
     "upload": "Upload",
     "download": "Download",
@@ -107,6 +111,13 @@
     "publishedUntil": "Published until",
     "lastUpdate": "Last update",
     "updatedBy": "Updated by"
+  },
+  "editor": {
+    "headless": "Headless",
+    "preview": "Preview",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile"
   },
   "message": {
     "areYouSure": "Are you sure you would like to proceed?",
@@ -194,6 +205,7 @@
     "noResult": "No color tags found"
   },
   "user": {
+    "account": "Account",
     "avatar": "Avatar",
     "firstName": "First Name",
     "lastName": "Last Name",

@@ -78,9 +78,9 @@ const AssetsSelectPanel: React.FC<IAssetsSelectPanelProps> = ({
             onSubmit(selectedAssets);
           }}
         >
-          Select
+          {t('command.select')}
         </PrimaryButton>
-        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
+        <DefaultButton onClick={onDismiss}>{t('command.cancel')}</DefaultButton>
       </Stack>
     ),
     [isOpen, selectedAssets]

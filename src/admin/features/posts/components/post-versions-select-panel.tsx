@@ -21,6 +21,8 @@ import { useHistory, useLocation } from 'react-router';
 import PostVersionsRestoreDialog from './post-versions-restore-dialog';
 import PostVersionsDeleteDialog from './post-versions-delete-dialog';
 import queryString from 'query-string';
+import i18next from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 const PostVersionsCommandBar = () => {
   const { getPosts, selectedPosts, setStateData, stateData } = usePosts();
@@ -29,7 +31,7 @@ const PostVersionsCommandBar = () => {
     () => [
       {
         key: 'restore',
-        text: 'Restore',
+        text: i18next.t('command.restore'),
         disabled: selectedPosts?.length !== 1,
         iconProps: { iconName: 'Undo' },
         onClick: () => {
@@ -38,7 +40,7 @@ const PostVersionsCommandBar = () => {
       },
       {
         key: 'delete',
-        text: 'Delete',
+        text: i18next.t('command.delete'),
         disabled: !(selectedPosts?.length > 0),
         iconProps: { iconName: 'Delete' },
         onClick: () => {
@@ -86,6 +88,7 @@ const PostVersionsSelectPanel: React.FC<PostVersionsSelectPanelProps> = ({
 
   const location = useLocation();
   const history = useHistory();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isOpen && post?.id) {
@@ -102,9 +105,9 @@ const PostVersionsSelectPanel: React.FC<PostVersionsSelectPanelProps> = ({
             onSelect(selectedPosts?.[0]);
           }}
         >
-          Open
+          {t('command.open')}
         </PrimaryButton>
-        <DefaultButton onClick={onDismiss}>Cancel</DefaultButton>
+        <DefaultButton onClick={onDismiss}>{t('command.cancel')}</DefaultButton>
       </Stack>
     ),
     [isOpen, post, selectedPosts]
@@ -114,7 +117,7 @@ const PostVersionsSelectPanel: React.FC<PostVersionsSelectPanelProps> = ({
     () => [
       {
         key: 'author',
-        name: 'Author',
+        name: i18next.t('common.author'),
         fieldName: 'author',
         minWidth: 50,
         maxWidth: 100,
@@ -127,7 +130,7 @@ const PostVersionsSelectPanel: React.FC<PostVersionsSelectPanelProps> = ({
       },
       {
         key: 'createdAt',
-        name: 'Created At',
+        name: i18next.t('common.createdAt'),
         onRender: ({ createdAt }) => <div>{createdAt}</div>,
         minWidth: 50,
         data: 'string',
@@ -140,7 +143,7 @@ const PostVersionsSelectPanel: React.FC<PostVersionsSelectPanelProps> = ({
   return (
     <Panel
       isOpen={isOpen}
-      headerText="Select version"
+      headerText={t("command.selectVersion")}
       isFooterAtBottom
       onRenderFooterContent={Footer}
       onDismiss={onDismiss}
