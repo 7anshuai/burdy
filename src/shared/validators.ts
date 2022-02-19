@@ -4,6 +4,7 @@ const Validators = {
   firstName: () => yup.string().min(2).required().label('First name'),
   lastName: () => yup.string().min(2).required().label('Last name'),
   email: () => yup.string().email().required().label('Email'),
+  phone: () => yup.string().required().length(11).matches(/^1[3456789]\d{9}$/).label('电话号码'),
   password: () => yup.string().min(6).required().label('Password'),
   imageSize: () => yup.object().shape({
     key: yup.string().required().min(2).label('Key'),

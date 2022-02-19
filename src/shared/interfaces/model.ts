@@ -13,10 +13,10 @@ export enum UserTokenType {
 
 export interface IUser {
   id: number;
-  email: string;
+  email?: string;
   firstName?: string;
   lastName?: string;
-  password: string;
+  password?: string;
   status: UserStatus;
   createdAt: Date;
   updatedAt: Date;
@@ -24,6 +24,18 @@ export interface IUser {
   sessions: IUserSession[];
   tokens: IUserToken[];
   groups: IGroup[];
+
+  phone?: string;
+  wxid?: string;
+  wxUnionId?: string;
+  nickname?: string;
+  avatar?: string;
+  realname?: string;
+  birthday?: Date;
+  location?: string;
+  profession?: string;
+  workPosition?: string;
+  workYear?: number;
 }
 
 export interface IUserMeta {
