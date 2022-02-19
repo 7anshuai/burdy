@@ -6,7 +6,8 @@ import {
   MessageBarType,
   PrimaryButton,
   Stack,
-  Text
+  Text,
+  DefaultButton
 } from '@fluentui/react';
 import classNames from 'classnames';
 import * as yup from 'yup';
@@ -60,10 +61,7 @@ const useStyles = makeStyles({
 });
 
 const formSchema = yup.object({
-  email: Validators.email(),
-  password: Validators.password(),
-  firstName: Validators.firstName(),
-  lastName: Validators.lastName()
+  phone: Validators.phone(),
 });
 
 const Welcome: React.FC<any> = () => {
@@ -73,10 +71,8 @@ const Welcome: React.FC<any> = () => {
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: ''
+      phone: '',
+      smsCode: '',
     }
   });
 
@@ -117,64 +113,49 @@ const Welcome: React.FC<any> = () => {
 
         <form onSubmit={submit}>
           <Stack tokens={{ childrenGap: 8 }}>
-            <Stack tokens={{ childrenGap: 8 }} horizontal>
-              <Stack.Item style={{ flexGrow: 1 }}>
-                <ControlledTextField
-                  control={control}
-                  name='firstName'
-                  type='text'
-                  label={t('user.firstName')}
-                  autoComplete='off'
-                  required
-                  data-cy="welcome-firstName"
-                />
-              </Stack.Item>
-              <Stack.Item style={{ flexGrow: 1 }}>
-                <ControlledTextField
-                  style={{ flexGrow: 1 }}
-                  control={control}
-                  name='lastName'
-                  type='text'
-                  label={t('user.lastName')}
-                  autoComplete='off'
-                  required
-                  data-cy="welcome-lastName"
-                />
-              </Stack.Item>
-            </Stack>
             <ControlledTextField
               control={control}
-              name='email'
-              type='email'
-              label={t('user.email')}
-              required
-              data-cy="welcome-email"
+              name='phone'
+              type='text'
+              placeholder={t('user.phone')}
+              data-cy="welcome-phone"
+              underlined
             />
-            <ControlledTextField
-              control={control}
-              name='password'
-              type='password'
-              label={t('user.password')}
-              canRevealPassword
-              required
-              data-cy="welcome-password"
-            />
-            <Stack.Item align='end'>
+            <Stack.Item>
+              <Stack horizontal horizontalAlign="space-between" >
+                <Stack.Item disableShrink grow>
+                  <ControlledTextField
+                    control={control}
+                    name='smsCode'
+                    type='smsCode'
+                    placeholder={t('user.smsCode')}
+                    data-cy="welcome-smsCode"
+                    underlined
+                  />
+                </Stack.Item>
+                <Stack.Item>
+                  <DefaultButton text="发送短信验证码" />
+                </Stack.Item>
+              </Stack>
+            </Stack.Item>
+            <Stack.Item>
               <PrimaryButton
                 className={styles.button}
                 type='submit'
                 disabled={init.loading}
                 data-cy="welcome-submit"
               >
-                {t('welcome.getStarted')}
+                {t('auth.login')}
               </PrimaryButton>
+            </Stack.Item>
+            <Stack.Item>
+              <DefaultButton className={styles.button}>微信登录 </DefaultButton>
             </Stack.Item>
           </Stack>
         </form>
-      </div>
-    </div>
-  )
-    ;
+      </div >
+    </div >
+  );
 };
 
 export default Welcome;

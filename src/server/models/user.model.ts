@@ -24,11 +24,38 @@ export default class User extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
-  @Index({ unique: true })
+  //// 为了省事不创建扩展表
+  @Column({ nullable: true })
+  @Index("email_idx")
   email: string;
 
-  @Column({ select: false })
+  @Column({ nullable: true, comment: "电话" })
+  @Index("phone_idx")
+  phone: string;
+
+  @Column({ nullable: true, comment: "微信号" })
+  @Index("wxid_idx")
+  wxid: string;
+
+  @Column({ nullable: true, comment: "姓名" })
+  realname: string;
+
+  @Column({ nullable: true, comment: "生日" })
+  birthday: Date;
+
+  @Column({ nullable: true, comment: "地区" })
+  location: string;
+
+  @Column({ nullable: true, comment: "职业,行业" })
+  profession: string;
+
+  @Column({ nullable: true, comment: "职位" })
+  workPosition: string;
+
+  @Column({ zerofill: true, type: 'tinyint', comment: "工作年限" })
+  workYear: number;
+
+  @Column({ select: false, nullable: true })
   password: string;
 
   @Column({ nullable: true })

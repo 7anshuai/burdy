@@ -17,7 +17,7 @@ interface AuthContextInterface {
   forgotVerify: UseAsyncReturn<any, [{ token: string; password: string }]>;
   init: UseAsyncReturn<
     void,
-    [{ email: string; password: string; meta?: object }]
+    [{ phone: string; smsCode: string; meta?: object }]
   >;
   updatePassword: UseAsyncReturn<
     any,
