@@ -9,6 +9,7 @@ import {
     Text,
     DefaultButton
 } from '@fluentui/react';
+import Validators from '@shared/validators';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -28,8 +29,7 @@ const useStyles = makeStyles({
 
 
 const formSchema = yup.object({
-    email: yup.string().email().required().label(i18next.t('auth.email')),
-    password: yup.string().min(6).label(i18next.t('auth.password')),
+    phone: Validators.phone(),
 });
 
 
@@ -40,8 +40,8 @@ const PhoneLogin: FC<Props> = (props: Props) => {
     const { control, handleSubmit } = useForm({
         resolver: yupResolver(formSchema),
         defaultValues: {
-            email: '',
-            password: '',
+            phone: '',
+            smsCode: '',
         },
     });
     const submit = handleSubmit((data) => {

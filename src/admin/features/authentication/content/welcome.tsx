@@ -5,18 +5,13 @@ import {
   makeStyles,
   MessageBar,
   MessageBarType,
-  PrimaryButton,
   Stack,
   Text,
-  DefaultButton
 } from '@fluentui/react';
 import classNames from 'classnames';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
 import WxLoginBtn from '@admin/features/authentication/components/wx-login';
 import PhoneLoginForm from '@admin/features/authentication/components/phone-login';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Validators from '@shared/validators';
+
 import logo from '../../../assets/logo.svg';
 import { useTranslation } from 'react-i18next';
 
@@ -62,9 +57,7 @@ const useStyles = makeStyles({
   }
 });
 
-const formSchema = yup.object({
-  phone: Validators.phone(),
-});
+
 
 const Welcome: React.FC<any> = () => {
   const styles = useStyles();
@@ -72,18 +65,6 @@ const Welcome: React.FC<any> = () => {
   const { init } = useAuth();
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-
-  const { control, handleSubmit } = useForm({
-    resolver: yupResolver(formSchema),
-    defaultValues: {
-      phone: '',
-      smsCode: '',
-    }
-  });
-
-  const submit = handleSubmit((data) => {
-    init.execute(data);
-  });
 
   let location = useLocation();
   useEffect(() => {
