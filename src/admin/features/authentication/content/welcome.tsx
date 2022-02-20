@@ -13,8 +13,8 @@ import {
 import classNames from 'classnames';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { ControlledTextField } from '@admin/components/rhf-components';
 import WxLoginBtn from '@admin/features/authentication/components/wx-login';
+import PhoneLoginForm from '@admin/features/authentication/components/phone-login';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Validators from '@shared/validators';
 import logo from '../../../assets/logo.svg';
@@ -132,49 +132,14 @@ const Welcome: React.FC<any> = () => {
             {errorMsg}
           </MessageBar>
         )}
-
-        <form onSubmit={submit}>
-          <Stack tokens={{ childrenGap: 8 }}>
-            <ControlledTextField
-              control={control}
-              name='phone'
-              type='text'
-              placeholder={t('user.phone')}
-              data-cy="welcome-phone"
-              underlined
-            />
-            <Stack.Item>
-              <Stack horizontal horizontalAlign="space-between" >
-                <Stack.Item disableShrink grow>
-                  <ControlledTextField
-                    control={control}
-                    name='smsCode'
-                    type='smsCode'
-                    placeholder={t('user.smsCode')}
-                    data-cy="welcome-smsCode"
-                    underlined
-                  />
-                </Stack.Item>
-                <Stack.Item>
-                  <DefaultButton text="发送短信验证码" />
-                </Stack.Item>
-              </Stack>
-            </Stack.Item>
-            <Stack.Item>
-              <PrimaryButton
-                className={styles.button}
-                type='submit'
-                disabled={init.loading}
-                data-cy="welcome-submit"
-              >
-                {t('auth.login')}
-              </PrimaryButton>
-            </Stack.Item>
-            <Stack.Item>
-              <WxLoginBtn className={styles.button} useType="init" />
-            </Stack.Item>
-          </Stack>
-        </form>
+        <Stack tokens={{ childrenGap: 10 }}>
+          <Stack.Item>
+            <PhoneLoginForm useType='init' />
+          </Stack.Item>
+          <Stack.Item>
+            <WxLoginBtn className={styles.button} useType="init" />
+          </Stack.Item>
+        </Stack>
       </div >
     </div >
   );

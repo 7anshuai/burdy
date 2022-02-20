@@ -2,24 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import WxLoginBtn from '@admin/features/authentication/components/wx-login';
 
-import { Link } from '@admin/components/links';
+import PhoneLoginForm from '@admin/features/authentication/components/phone-login';
+
 import classNames from 'classnames';
 import {
   makeStyles,
   MessageBar,
   MessageBarType,
-  PrimaryButton,
   Stack,
   Text,
-  DefaultButton
 } from '@fluentui/react';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ControlledTextField } from '@admin/components/rhf-components';
 import logo from '../../../assets/logo.svg';
-import i18next from 'i18next';
 
 const useStyles = makeStyles({
   wrapper: {
@@ -64,10 +58,6 @@ const useStyles = makeStyles({
   },
 });
 
-const formSchema = yup.object({
-  email: yup.string().email().required().label(i18next.t('auth.email')),
-  password: yup.string().min(6).label(i18next.t('auth.password')),
-});
 
 const LogIn: React.FC<any> = () => {
   const styles = useStyles();
@@ -78,17 +68,8 @@ const LogIn: React.FC<any> = () => {
 
 
   const { logIn } = useAuth();
-  const { control, handleSubmit } = useForm({
-    resolver: yupResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
 
-  const submit = handleSubmit((data) => {
 
-  });
 
   useEffect(() => {
     logIn.reset();
@@ -135,47 +116,12 @@ const LogIn: React.FC<any> = () => {
           </MessageBar>
         )}
         <Stack tokens={{ childrenGap: 10 }}>
-          <form onSubmit={submit}>
-            <Stack tokens={{ childrenGap: 8 }}>
-              <ControlledTextField
-                control={control}
-                name='phone'
-                type='text'
-                placeholder={t('user.phone')}
-                data-cy="welcome-phone"
-                underlined
-              />
-              <Stack.Item>
-                <Stack horizontal horizontalAlign="space-between" >
-                  <Stack.Item disableShrink grow>
-                    <ControlledTextField
-                      control={control}
-                      name='smsCode'
-                      type='smsCode'
-                      placeholder={t('user.smsCode')}
-                      data-cy="welcome-smsCode"
-                      underlined
-                    />
-                  </Stack.Item>
-                  <Stack.Item>
-                    <DefaultButton text="发送短信验证码" />
-                  </Stack.Item>
-                </Stack>
-              </Stack.Item>
-              <Stack.Item>
-                <PrimaryButton
-                  className={styles.button}
-                  type='submit'
-                  data-cy="welcome-submit"
-                >
-                  {t('auth.login')}
-                </PrimaryButton>
-              </Stack.Item>
-              <Stack.Item>
-                <WxLoginBtn className={styles.button} />
-              </Stack.Item>
-            </Stack>
-          </form>
+          <Stack.Item>
+            <PhoneLoginForm />
+          </Stack.Item>
+          <Stack.Item>
+            <WxLoginBtn className={styles.button} />
+          </Stack.Item>
         </Stack>
       </div>
     </div>
