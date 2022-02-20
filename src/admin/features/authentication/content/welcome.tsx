@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom"
 import { useAuth } from '@admin/features/authentication/context/auth.context';
 import {
   makeStyles,
@@ -13,6 +14,7 @@ import classNames from 'classnames';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { ControlledTextField } from '@admin/components/rhf-components';
+import WxLoginBtn from '@admin/features/authentication/components/wx-login';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Validators from '@shared/validators';
 import logo from '../../../assets/logo.svg';
@@ -68,6 +70,9 @@ const Welcome: React.FC<any> = () => {
   const styles = useStyles();
   const { t } = useTranslation();
   const { init } = useAuth();
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
     defaultValues: {
@@ -80,9 +85,26 @@ const Welcome: React.FC<any> = () => {
     init.execute(data);
   });
 
+  let location = useLocation();
   useEffect(() => {
     init.reset();
-  }, []);
+    if (location.search === "") {
+      return
+    }
+    const query = new URLSearchParams(location.search)
+    const errorMsg = query.get('error')
+    if (errorMsg == "") {
+      return
+    }
+    try {
+      const errorObj = JSON.parse(errorMsg)
+      if (errorObj.code > 0) {
+        setShowError(true)
+        setErrorMsg(`错误:${errorObj.code} ${errorObj.msg}`)
+      }
+    } catch (e) {
+    }
+  }, [location]);
 
   return (
     <div className={styles.container}>
@@ -149,8 +171,19 @@ const Welcome: React.FC<any> = () => {
               </PrimaryButton>
             </Stack.Item>
             <Stack.Item>
-              <DefaultButton className={styles.button}>微信登录 </DefaultButton>
+              <WxLoginBtn className={styles.button} useType="init" />
             </Stack.Item>
+            {showError ? (
+              <Stack.Item>
+                <MessageBar
+                  messageBarType={MessageBarType.error}
+                  isMultiline={false}
+                  dismissButtonAriaLabel="Close"
+                >
+                  {errorMsg}
+                </MessageBar>
+              </Stack.Item>
+            ) : null}
           </Stack>
         </form>
       </div >

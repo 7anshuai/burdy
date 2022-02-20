@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@admin/features/authentication/context/auth.context';
+import WxLoginBtn from '@admin/features/authentication/components/wx-login';
+
 import { Link } from '@admin/components/links';
 import classNames from 'classnames';
 import {
@@ -9,6 +11,7 @@ import {
   PrimaryButton,
   Stack,
   Text,
+  DefaultButton
 } from '@fluentui/react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -69,6 +72,11 @@ const formSchema = yup.object({
 const LogIn: React.FC<any> = () => {
   const styles = useStyles();
   const { t } = useTranslation();
+
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+
   const { logIn } = useAuth();
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formSchema),
@@ -79,7 +87,7 @@ const LogIn: React.FC<any> = () => {
   });
 
   const submit = handleSubmit((data) => {
-    logIn.execute(data);
+
   });
 
   useEffect(() => {
@@ -100,9 +108,6 @@ const LogIn: React.FC<any> = () => {
           <Text variant="xLargePlus" block>
             {t('app.name')}
           </Text>
-          <Text variant="medium" block>
-            {t('auth.loginToContinue')}
-          </Text>
         </Stack>
         {logIn.error?.message && (
           <MessageBar
@@ -114,41 +119,55 @@ const LogIn: React.FC<any> = () => {
         )}
         <Stack tokens={{ childrenGap: 10 }}>
           <form onSubmit={submit}>
-            <ControlledTextField
-              control={control}
-              type="email"
-              name="email"
-              label={t('auth.email')}
-              required
-              data-cy="login-email"
-            />
-            <ControlledTextField
-              control={control}
-              name="password"
-              label={t('auth.password')}
-              required
-              canRevealPassword
-              type="password"
-              data-cy="login-password"
-            />
-            <Stack
-              horizontal
-              verticalAlign="end"
-              horizontalAlign="space-between"
-            >
-              <Stack.Item shrink={false}>
-                <Link to="/forgot">{t('auth.forget')}</Link>
+            <Stack tokens={{ childrenGap: 8 }}>
+              <ControlledTextField
+                control={control}
+                name='phone'
+                type='text'
+                placeholder={t('user.phone')}
+                data-cy="welcome-phone"
+                underlined
+              />
+              <Stack.Item>
+                <Stack horizontal horizontalAlign="space-between" >
+                  <Stack.Item disableShrink grow>
+                    <ControlledTextField
+                      control={control}
+                      name='smsCode'
+                      type='smsCode'
+                      placeholder={t('user.smsCode')}
+                      data-cy="welcome-smsCode"
+                      underlined
+                    />
+                  </Stack.Item>
+                  <Stack.Item>
+                    <DefaultButton text="发送短信验证码" />
+                  </Stack.Item>
+                </Stack>
               </Stack.Item>
-              <Stack.Item shrink>
+              <Stack.Item>
                 <PrimaryButton
                   className={styles.button}
-                  type="submit"
-                  disabled={logIn.loading}
-                  data-cy="login-submit"
+                  type='submit'
+                  data-cy="welcome-submit"
                 >
                   {t('auth.login')}
                 </PrimaryButton>
               </Stack.Item>
+              <Stack.Item>
+                <WxLoginBtn className={styles.button} />
+              </Stack.Item>
+              {showError ? (
+                <Stack.Item>
+                  <MessageBar
+                    messageBarType={MessageBarType.error}
+                    isMultiline={false}
+                    dismissButtonAriaLabel="Close"
+                  >
+                    {errorMsg}
+                  </MessageBar>
+                </Stack.Item>
+              ) : null}
             </Stack>
           </form>
         </Stack>

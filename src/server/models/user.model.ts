@@ -27,36 +27,46 @@ export default class User extends BaseEntity implements IUser {
   //// 为了省事不创建扩展表
   @Column({ nullable: true })
   @Index("email_idx")
-  email: string;
+  email?: string;
 
   @Column({ nullable: true, comment: "电话" })
   @Index("phone_idx")
-  phone: string;
+  phone?: string;
 
-  @Column({ nullable: true, comment: "微信号" })
+  @Column({ nullable: true, comment: "微信号 openid" })
   @Index("wxid_idx")
-  wxid: string;
+  wxid?: string;
+
+  @Column({ nullable: true, comment: "微信号 openid" })
+  @Index("wxUnionId_idx")
+  wxUnionId?: string;
+
+  @Column({ nullable: true, comment: "微信昵称" })
+  nickname?: string;
+
+  @Column({ nullable: true, comment: "头像" })
+  avatar?: string;
 
   @Column({ nullable: true, comment: "姓名" })
-  realname: string;
+  realname?: string;
 
   @Column({ nullable: true, comment: "生日" })
-  birthday: Date;
+  birthday?: Date;
 
   @Column({ nullable: true, comment: "地区" })
-  location: string;
+  location?: string;
 
   @Column({ nullable: true, comment: "职业,行业" })
-  profession: string;
+  profession?: string;
 
   @Column({ nullable: true, comment: "职位" })
-  workPosition: string;
+  workPosition?: string;
 
-  @Column({ zerofill: true, type: 'tinyint', comment: "工作年限" })
-  workYear: number;
+  @Column({ zerofill: true, type: 'int', comment: "工作年限", default: 0 })
+  workYear?: number;
 
   @Column({ select: false, nullable: true })
-  password: string;
+  password?: string;
 
   @Column({ nullable: true })
   firstName?: string;
