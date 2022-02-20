@@ -19,7 +19,6 @@ app.get(
         const state = req.query.state;
         const code = req.query.code;
         var wxRespone: WxResponse;
-        console.log(process.env.NODE_ENV, "999999");
         if (process.env.NODE_ENV === "development") {
             if (req.query.test === '1') {
                 wxRespone = {
@@ -27,28 +26,29 @@ app.get(
                     msg: '111'
                 }
             } else {
+                const wxid = req.query.wxid ? req.query.wxid + "" : "test";
                 wxRespone = {
                     code: 0,
                     msg: '',
                     user: {
-                        wxid: "test",
-                        wxUnionId: "test",
+                        wxid: wxid,
+                        wxUnionId: wxid,
                         nickname: "test",
                         avatar: "test"
                     }
                 }
             }
-
         } else {
             wxRespone = await getWechatUserInfo(code + "");
         }
         if (wxRespone.code != 0) {
             const q = new URLSearchParams();
             q.append("error", JSON.stringify(wxRespone));
+            var redirectURI = "/admin/login"
             if (state === "init") {
-                res.redirect("/admin/init?" + q.toString(), 302);
-                console.log(1111)
+                redirectURI = "/admin/init"
             }
+            res.redirect(redirectURI + "?" + q.toString(), 302);
             res.end();
             // 登录错误
             return
@@ -78,24 +78,27 @@ app.get(
             .leftJoinAndSelect('user.meta', 'meta')
             .where('user.wxid = :wxid', { wxid: wxUserInfo.wxid })
             .getOne();
-
-        if (user.status !== UserStatus.ACTIVE) {
-            throw new BadRequestError('inactive_user');
-        }
-
-        if (user.id === 0) {
-            const token = createWechatUser(wxUserInfo);
+        //  如果用户不存在，那么注册个新用户
+        if (!user || user.id === 0) {
+            const token = await createWechatUser(wxUserInfo);
             res.cookie('token', token, {
                 maxAge: getExpires().getTime() * 1000,
                 httpOnly: true,
             });
-            // 302 跳转首页
             // 302 跳转首页
             res.redirect("/admin", 302);
             res.end();
             return
         }
 
+        // 查看用户状态
+        if (user.status !== UserStatus.ACTIVE) {
+            const q = new URLSearchParams();
+            q.append("error", JSON.stringify(wxRespone));
+            res.redirect("/admin/login?" + q.toString(), 302);
+            res.end();
+            return
+        }
 
         // 写入登录cookie
         const userSession = await userSessionRepository.save({

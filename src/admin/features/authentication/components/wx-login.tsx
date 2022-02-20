@@ -22,7 +22,7 @@ const WxLogin: FC<Props> = (props: Props) => {
     }
 
     const wxLoginMock = () => {
-        window.location.href = "/api/weixin/login"
+        window.location.href = "/api/weixin/login?wxid=111a"
     }
 
 

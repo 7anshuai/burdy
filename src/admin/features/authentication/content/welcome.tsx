@@ -124,12 +124,12 @@ const Welcome: React.FC<any> = () => {
             {t('welcome.desc')}
           </Text>
         </Stack>
-        {init.error?.message && (
+        {showError && (
           <MessageBar
             className={styles.alert}
             messageBarType={MessageBarType.error}
           >
-            {init.error.message}
+            {errorMsg}
           </MessageBar>
         )}
 
@@ -173,17 +173,6 @@ const Welcome: React.FC<any> = () => {
             <Stack.Item>
               <WxLoginBtn className={styles.button} useType="init" />
             </Stack.Item>
-            {showError ? (
-              <Stack.Item>
-                <MessageBar
-                  messageBarType={MessageBarType.error}
-                  isMultiline={false}
-                  dismissButtonAriaLabel="Close"
-                >
-                  {errorMsg}
-                </MessageBar>
-              </Stack.Item>
-            ) : null}
           </Stack>
         </form>
       </div >

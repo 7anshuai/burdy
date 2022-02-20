@@ -13,10 +13,16 @@ import axios from 'axios';
 
 
 // 新增微信用户
-export async function createWechatUser(user: DeepPartial<User>): Promise<string> {
+export async function createWechatUser(userData: DeepPartial<User>): Promise<string> {
     const userSessionRepository = getRepository(UserSession);
+    const userRepository = getEnhancedRepository(User);
     let token;
     await getManager().transaction(async (entityManager) => {
+        let user = await userRepository.create({
+            ...userData,
+            status: UserStatus.ACTIVE,
+        });
+
         user = await entityManager.save(user);
         const userSession = await entityManager.save(
             userSessionRepository.create({
@@ -63,34 +69,26 @@ export async function accountInint(userData: DeepPartial<User>): Promise<string>
     let siteSettings = siteSettingsRepository.create([
         { key: 'initiated', value: true },
     ]);
-    console.log(1)
     const accessTokenRepository = getEnhancedRepository(AccessToken);
     await accessTokenRepository.save({
         name: "", // req?.body?.name
         token: nanoid()
     });
-    console.log(2)
     let token;
     await getManager().transaction(async (entityManager) => {
-        console.log(20)
         user = await entityManager.save(user);
-        console.log(201)
         siteSettings = await entityManager.save(siteSettings);
-        console.log(21)
         const userSession = await entityManager.save(
             userSessionRepository.create({
                 user,
                 expiresAt: getExpires(),
             })
         );
-        console.log(22)
         token = sign({
             sessionId: userSession.id,
             userId: user.id,
         });
     });
-    console.log(3)
-    console.log(token)
     return token;
 }
 

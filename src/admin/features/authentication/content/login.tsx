@@ -92,6 +92,23 @@ const LogIn: React.FC<any> = () => {
 
   useEffect(() => {
     logIn.reset();
+
+    if (location.search === "") {
+      return
+    }
+    const query = new URLSearchParams(location.search)
+    const errorMsg = query.get('error')
+    if (errorMsg == "") {
+      return
+    }
+    try {
+      const errorObj = JSON.parse(errorMsg)
+      if (errorObj.code > 0) {
+        setShowError(true)
+        setErrorMsg(`错误:${errorObj.code} ${errorObj.msg}`)
+      }
+    } catch (e) {
+    }
   }, []);
 
   return (
@@ -109,12 +126,12 @@ const LogIn: React.FC<any> = () => {
             {t('app.name')}
           </Text>
         </Stack>
-        {logIn.error?.message && (
+        {showError && (
           <MessageBar
             className={styles.alert}
             messageBarType={MessageBarType.error}
           >
-            {logIn.error.message}
+            {errorMsg}
           </MessageBar>
         )}
         <Stack tokens={{ childrenGap: 10 }}>
@@ -157,17 +174,6 @@ const LogIn: React.FC<any> = () => {
               <Stack.Item>
                 <WxLoginBtn className={styles.button} />
               </Stack.Item>
-              {showError ? (
-                <Stack.Item>
-                  <MessageBar
-                    messageBarType={MessageBarType.error}
-                    isMultiline={false}
-                    dismissButtonAriaLabel="Close"
-                  >
-                    {errorMsg}
-                  </MessageBar>
-                </Stack.Item>
-              ) : null}
             </Stack>
           </form>
         </Stack>
