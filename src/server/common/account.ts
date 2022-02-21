@@ -13,7 +13,7 @@ import axios from 'axios';
 
 
 // 新增微信用户
-export async function createWechatUser(userData: DeepPartial<User>): Promise<string> {
+export async function createCNUser(userData: DeepPartial<User>): Promise<string> {
     const userSessionRepository = getRepository(UserSession);
     const userRepository = getEnhancedRepository(User);
     let token;

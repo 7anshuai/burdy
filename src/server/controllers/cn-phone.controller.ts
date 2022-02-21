@@ -9,13 +9,32 @@ import { UserStatus } from '@shared/interfaces/model';
 
 const app = express();
 
-app.get(
-    '/weixin/login',
+app.post(
+    '/phone/send_sms',
     async (req, res) => {
+        const body = req.body;
+        console.log(body);
+        const phone = body.phone;
+        if (!phone || /^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(phone) === false) {
+            res.send({
+                code: 500001,
+                msg: "手机号格式错误"
+            })
+            return
+        }
+        // ip + sessionId + phone 限制发送次数
+
+        // 模拟发送成功
+    }
+)
+
+app.post(
+    '/phone/login',
+    async (req, res) => {
+        const body = req.body;
+        console.log(body);
         // 初始化
         const state = req.query.state;
-        const code = req.query.code;
-        var wxRespone: WxResponse = await getWechatUserInfo(code + "");
 
         let failURI = "";
         let successURI = "";
@@ -34,18 +53,11 @@ app.get(
                 failURI = "/"
                 break
         }
-
-        if (wxRespone.code != 0) {
-            const q = new URLSearchParams();
-            q.append("error", JSON.stringify(wxRespone));
-            res.redirect(failURI + "?" + q.toString(), 302);
-            res.end();
-            // 登录错误
-            return
-        }
-        const wxUserInfo = wxRespone.user;
+        const loginUserInfo = {
+            phone: body.phone,
+        };
         if (state === "init") {
-            const token = accountInint(wxUserInfo);
+            const token = accountInint(loginUserInfo);
             res.cookie('token', token, {
                 maxAge: getExpires().getTime() * 1000,
                 httpOnly: true,
@@ -60,14 +72,13 @@ app.get(
         const userSessionRepository = getRepository(UserSession);
 
         const user = await userRepository.createQueryBuilder('user')
-            .addSelect('user.wxid')
             .leftJoinAndSelect('user.groups', 'groups')
             .leftJoinAndSelect('user.meta', 'meta')
-            .where('user.wxid = :wxid', { wxid: wxUserInfo.wxid })
+            .where('user.phone = :phone', { phone: body.phone })
             .getOne();
         //  如果用户不存在，那么注册个新用户
         if (!user || user.id === 0) {
-            const token = await createCNUser(wxUserInfo);
+            const token = await createCNUser(loginUserInfo);
             res.cookie('token', token, {
                 maxAge: getExpires().getTime() * 1000,
                 httpOnly: true,

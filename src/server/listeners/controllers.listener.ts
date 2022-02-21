@@ -15,6 +15,7 @@ import backupController from '@server/controllers/backup.controller';
 import accessTokenController from '@server/controllers/access-token.controller';
 import searchController from '@server/controllers/search.controller';
 import wxController from '@server/controllers/wx.controller';
+import phoneController from '@server/controllers/cn-phone.controller';
 
 Hooks.addAction(
   'api/init',
@@ -48,6 +49,7 @@ Hooks.addAction(
     app.use(accessTokenController);
     app.use(searchController);
     app.use(wxController);
+    app.use(phoneController);
   },
   { id: 'core/controllers' }
 );
