@@ -1,5 +1,6 @@
 import '../util/env.util';
 import { connectDatabaseDriver } from '@server/drivers/database.driver';
+import { connectRedisDriver } from '@server/drivers/redis.driver';
 import { launch } from '@shared/features/server';
 import { connectMailDriver } from '@server/drivers/mail.driver';
 import Hooks from '@shared/features/hooks';
@@ -22,6 +23,6 @@ import httpProxy from 'http-proxy';
   );
 
   require('../../index');
-  await Promise.all([connectDatabaseDriver()]);
+  await Promise.all([connectDatabaseDriver(), connectRedisDriver()]);
   await launch();
 })();

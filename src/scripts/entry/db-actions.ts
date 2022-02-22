@@ -1,11 +1,12 @@
 import '../util/env.util';
 import { connectDatabaseDriver } from '@server/drivers/database.driver';
+import { connectRedisDriver } from '@server/drivers/redis.driver';
 import { exportContent, importContent } from '@server/business-logic/server.bl';
 import ConsoleOutput from '@scripts/util/console-output.util';
 import PathUtil from '@scripts/util/path.util';
-import {DbAction, ExportAction, GenerateApiKeyAction, ImportAction} from "@scripts/interfaces/db-actions";
+import { DbAction, ExportAction, GenerateApiKeyAction, ImportAction } from "@scripts/interfaces/db-actions";
 import { nanoid } from 'nanoid';
-import {getEnhancedRepository} from "@server/common/orm-helpers";
+import { getEnhancedRepository } from "@server/common/orm-helpers";
 import AccessToken from "@server/models/access-token";
 
 declare const action: DbAction;
@@ -43,7 +44,7 @@ const handleGenerateApiKey = async () => {
   require('../../index');
 
   await connectDatabaseDriver();
-
+  await connectRedisDriver();
   switch (action.type) {
     case 'import':
       await handleImport();

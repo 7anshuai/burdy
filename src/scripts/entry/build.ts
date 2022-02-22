@@ -1,5 +1,6 @@
 import '../util/env.util';
 import { connectDatabaseDriver } from '@server/drivers/database.driver';
+import { connectRedisDriver } from '@server/drivers/redis.driver';
 import { launch } from '@shared/features/server';
 import Hooks from '@shared/features/hooks';
 import express, { Express } from 'express';
@@ -20,6 +21,6 @@ import { connectMailDriver } from '@server/drivers/mail.driver';
   );
 
   require('../../index');
-  await Promise.all([connectDatabaseDriver(), connectMailDriver()]);
+  await Promise.all([connectDatabaseDriver(), connectRedisDriver(), connectMailDriver()]);
   await launch();
 })();
