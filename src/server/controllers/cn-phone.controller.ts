@@ -1,14 +1,16 @@
 import express, { response } from 'express';
 import { getRepository } from 'typeorm';
 import { redidsDriver } from '@server/drivers/redis.driver';
-
+import { sendSMS } from "@server/drivers/tencentcloud.driver";
 import { accountInint, createCNUser, getWechatUserInfo, WxResponse } from "@server/common/account";
 import { getExpires, sign } from '@server/common/jwt';
 import User from '@server/models/user.model';
 import UserSession from '@server/models/user-session.model';
 import { UserStatus } from '@shared/interfaces/model';
+import asyncMiddleware from '@server/middleware/async.middleware';
 
 const app = express();
+
 
 function makeid(length) {
     var result = '';
@@ -20,8 +22,20 @@ function makeid(length) {
     }
     return result;
 }
+// 频率控制
+const RateConfig = {
+    interval: 60, //  间隔30秒可以发一次?
+    unit: { // 单位时间内可以发送的次数
+        seconds: 60 * 30, // 30*60 秒内
+        count: 5, // 一共只能发送5次
+    },
+    verity: { // 单位时间内运行允许校验的次数
+        seconds: 60 * 10, // 10*60 秒内
+        count: 5, // 一共只能校验5次
+    }
+}
 
-// 该ip是否可以继续发送短信
+// 该ip是否可以继续发送短信 每个30分钟内不能超过5次
 async function ipCanSend(ip: string): Promise<boolean> {
     if (ip == "") {
         return true
@@ -29,13 +43,12 @@ async function ipCanSend(ip: string): Promise<boolean> {
     // ip的发送频繁程度
     const ipKey = `ip:sendrate:${ip}`;
     const ipRate = await redidsDriver.client.get(ipKey);
-    console.log("ip rate:", ipRate)
     // 查看已发送次数 30分钟内不能超过N次
-    if (ipRate && ~~ipRate > 5) {
+    if (ipRate && ~~ipRate > RateConfig.unit.count - 1) {
         return false
     }
     if (!ipRate) {
-        await redidsDriver.client.set(ipKey, 0, { EX: 30 * 60 });
+        await redidsDriver.client.set(ipKey, 0, { EX: RateConfig.unit.seconds });
     }
     await redidsDriver.client.incr(ipKey);
     return true;
@@ -48,16 +61,16 @@ async function cleanIpSendRate(ip: string) {
 }
 
 
-// 该ip+电话号码是否可以继续发送短信
+// 该ip+电话号码是否可以继续发送短信, 1分钟内不能超过1次
 async function ipPhoneCanSend(ip: string, phone: string): Promise<boolean> {
     // ip的发送频繁程度
-    const ipKey = `ip_phone:sendrate:${ip}:${phone}`;
+    const ipKey = `ip_phone:sendrate:${ip}`;
     const ipRate = await redidsDriver.client.exists(ipKey);
     // 查看已发送次数 1分钟内不能超过1次
     if (ipRate == 1) {
         return false
     }
-    await redidsDriver.client.set(ipKey, 1, { EX: 60 });
+    await redidsDriver.client.set(ipKey, 1, { EX: RateConfig.interval });
     return true;
 }
 
@@ -74,14 +87,13 @@ async function canVerityCode(ip: string, phone: string): Promise<boolean> {
     // ip的电话号码的验证频繁程度
     const ipKey = `ip:verityrate:${ip}:${phone}`;
     const ipRate = await redidsDriver.client.get(ipKey);
-    console.log("ip:verityrate:", ipRate)
     // 查看已发送次数 10分钟内不能超过5次
-    if (ipRate && ~~ipRate > 5) {
+    if (ipRate && ~~ipRate > RateConfig.verity.count - 1) {
         return false
     }
     if (!ipRate) {
         await redidsDriver.client.set(ipKey, 0, {
-            EX: 10 * 60
+            EX: RateConfig.verity.seconds
         });
     }
     await redidsDriver.client.incr(ipKey);
@@ -93,12 +105,12 @@ async function cleanVerityRate(ip: string, phone: string) {
 }
 
 function isPhone(phone: string): boolean {
-    return phone && /^1[3|4|5|6|7|8|9]\d{8}$/.test(phone)
+    return phone && /^1[3|4|5|6|7|8|9]\d{9}$/.test(phone)
 }
 
 app.post(
     '/phone/send_sms',
-    async (req, res) => {
+    asyncMiddleware(async (req, res) => {
         const body = req.body;
         const phone = body.phone;
         if (!isPhone(phone)) {
@@ -109,19 +121,9 @@ app.post(
             return
         }
         var ips = req.headers['x-forwarded-for'] || req.socket.remoteAddress || ""
-        var ip = ""
-        if (typeof ips !== 'string') {
-            ip = ips[0];
-        }
+        var ip = typeof ips !== 'string' ? ip = ips[0] : ips
         // 发送频率限制
-        console.log(phone, ip);
-        if (!await ipCanSend(ip)) {
-            res.send({
-                code: 500002,
-                msg: "发送频率太高,30分钟后再试"
-            })
-            return
-        }
+        // console.log(phone, ip);
         if (!await ipPhoneCanSend(ip, phone)) {
             res.send({
                 code: 500003,
@@ -129,21 +131,37 @@ app.post(
             })
             return
         }
+        if (!await ipCanSend(ip)) {
+            res.send({
+                code: 500002,
+                msg: "发送频率太高,30分钟后再试"
+            })
+            return
+        }
         // 生成随机数
         const code = makeid(4);
         console.log("随机验证码是:", code);
-        // TODO: 运营商发送短信
+        // 运营商发送短信
+        try {
+            await sendSMS(phone, code);
+        } catch (e) {
+            console.error(e)
+            res.send({
+                code: 500004,
+                msg: "短信发送失败"
+            });
+        }
         redidsDriver.client.set("smscode:verity:" + phone, code, { EX: 60 * 5 });
         res.send({
             code: 0,
             msg: "发送成功!",
         })
-    }
+    })
 )
 
 app.post(
     '/phone/login',
-    async (req, res) => {
+    asyncMiddleware(async (req, res) => {
         const body = req.body;
         const phone = body.phone;
         const code = body.code;
@@ -155,10 +173,7 @@ app.post(
             return
         }
         var ips = req.headers['x-forwarded-for'] || req.socket.remoteAddress || ""
-        var ip = ""
-        if (typeof ips !== 'string') {
-            ip = ips[0];
-        }
+        var ip = typeof ips !== 'string' ? ip = ips[0] : ips
         if (!await canVerityCode(ip, phone)) {
             res.send({
                 code: 500005,
@@ -181,22 +196,17 @@ app.post(
 
         // 初始化
         const state = req.query.state;
-
-        let failURI = "";
         let successURI = "";
 
         switch (state) {
             case "init":
-                failURI = "/admin/init"
                 successURI = "/admin"
                 break
             case "admin":
-                failURI = "/admin/login"
                 successURI = "/admin"
                 break
             case "user":
-                failURI = "/login"
-                failURI = "/"
+                successURI = "/"
                 break
         }
         const loginUserInfo = {
@@ -208,8 +218,13 @@ app.post(
                 maxAge: getExpires().getTime() * 1000,
                 httpOnly: true,
             });
-            // 302 跳转首页
-            res.redirect(successURI, 302);
+            res.send({
+                code: 0,
+                msg: "登录成功",
+                data: {
+                    url: successURI
+                }
+            })
             res.end();
             return
         }
@@ -229,18 +244,19 @@ app.post(
                 maxAge: getExpires().getTime() * 1000,
                 httpOnly: true,
             });
-            // 302 跳转首页
-            res.redirect(successURI, 302);
-            res.end();
+            res.send({
+                code: 0,
+                msg: "登录成功",
+                data: {
+                    url: successURI
+                }
+            })
             return
         }
 
         // 查看用户状态
         if (user.status !== UserStatus.ACTIVE) {
-            const q = new URLSearchParams();
-            q.append("error", JSON.stringify({ code: 600001, msg: "本用户已被禁止登录" }));
-            res.redirect(failURI + "?" + q.toString(), 302);
-            res.end();
+            res.send({ code: 600001, msg: "本用户已被禁止登录" })
             return
         }
 
@@ -258,11 +274,15 @@ app.post(
             maxAge: getExpires().getTime() * 1000,
             httpOnly: true,
         });
-        // 302 跳转首页
-        res.redirect(successURI, 302);
-        res.end();
+        res.send({
+            code: 0,
+            msg: "登录成功",
+            data: {
+                url: successURI
+            }
+        })
         return
-    }
+    })
 );
 
 export default app

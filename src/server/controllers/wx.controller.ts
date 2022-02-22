@@ -1,6 +1,7 @@
 import express, { response } from 'express';
 import { getRepository } from 'typeorm';
 
+import asyncMiddleware from '@server/middleware/async.middleware';
 import { accountInint, createCNUser, getWechatUserInfo, WxResponse } from "@server/common/account";
 import { getExpires, sign } from '@server/common/jwt';
 import User from '@server/models/user.model';
@@ -11,7 +12,7 @@ const app = express();
 
 app.get(
     '/weixin/login',
-    async (req, res) => {
+    asyncMiddleware(async (req, res) => {
         // 初始化
         const state = req.query.state;
         const code = req.query.code;
@@ -105,7 +106,7 @@ app.get(
         res.redirect(successURI, 302);
         res.end();
         return
-    }
+    })
 );
 
 export default app

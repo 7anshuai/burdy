@@ -4,11 +4,15 @@
     "src/**/*.ts",
     "*.tsx",
     "src/**/*.tsx",
+    "src/types/**/*.d.ts",
     "src/admin/index.html"
   ],
   "exclude": [
     "node_modules"
   ],
+  "ts-node": {
+    "files": true,
+  },
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     "resolveJsonModule": true,

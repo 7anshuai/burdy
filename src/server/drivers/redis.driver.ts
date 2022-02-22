@@ -11,11 +11,17 @@ const redidsDriver: IRedisDriver = {
 
 const connectRedisDriver = async () => {
     try {
-        const client = await redis.createClient({
+        if (!process.env.REDIS_URL) {
+            throw new Error('REDIS_URL is not defined')
+        }
+        const client = redis.createClient({
             url: process.env.REDIS_URL,
         });
+        client.on('error', (err) => console.log('Redis Client Error', err));
+        client.on('ready', () => console.log(console.log(chalk.green(`Connection to redis ${process.env.REDIS_URL}`))));
+        await client.connect();
         redidsDriver.client = client as any;
-        console.log(chalk.green(`Connection to redis ${process.env.REDIS_URL}`));
+        const v = await redidsDriver.client.get("*")
     } catch (e) {
         console.log(e);
         console.error(chalk.red(`Error! Connection to redis ${process.env.REDIS_URL}`));
