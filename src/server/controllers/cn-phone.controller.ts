@@ -75,7 +75,7 @@ async function ipPhoneCanSend(ip: string, phone: string): Promise<boolean> {
 }
 
 async function cleanIpPhoneSendRate(ip: string, phone: string) {
-    const ipKey = `ip_phone:sendrate:${ip}:${phone}`;
+    const ipKey = `ip_phone:sendrate:${ip}`;
     await redidsDriver.client.del(ipKey);
 }
 
@@ -140,10 +140,9 @@ app.post(
         }
         // 生成随机数
         const code = makeid(4);
-        console.log("随机验证码是:", code);
-        // 运营商发送短信
+        //运营商发送短信
         try {
-            await sendSMS(phone, code);
+            process.env.SEND_SMS === "0" ? console.log("随机验证码是:", code) : await sendSMS(phone, code);
         } catch (e) {
             console.error(e)
             res.send({
@@ -164,7 +163,7 @@ app.post(
     asyncMiddleware(async (req, res) => {
         const body = req.body;
         const phone = body.phone;
-        const code = body.code;
+        const code = body.smsCode;
         if (!isPhone(phone)) {
             res.send({
                 code: 500004,
@@ -181,8 +180,8 @@ app.post(
             })
             return
         }
-        const sendedCode = await redidsDriver.client.get("smscode:verity:" + phone);
-        if (code != sendedCode) {
+        const savedCode = await redidsDriver.client.get("smscode:verity:" + phone);
+        if (code != savedCode) {
             res.send({
                 code: 500006,
                 msg: "验证码错误"
@@ -197,7 +196,6 @@ app.post(
         // 初始化
         const state = req.query.state;
         let successURI = "";
-
         switch (state) {
             case "init":
                 successURI = "/admin"
@@ -225,7 +223,6 @@ app.post(
                     url: successURI
                 }
             })
-            res.end();
             return
         }
         // 用户是否注册 没有注册 默认注册一个

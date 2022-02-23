@@ -50,7 +50,6 @@ export async function accountInint(userData: DeepPartial<User>): Promise<string>
         siteSettingsRepository.findOne({ where: { key: 'initiated' } }),
         userRepository.count(),
     ]);
-    console.log(initiated, userCount);
     if (initiated || userCount > 0) {
         return ""
     }

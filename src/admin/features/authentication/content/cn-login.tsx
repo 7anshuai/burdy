@@ -63,6 +63,9 @@ const LogIn: React.FC<any> = () => {
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [sucessMessage, setSucessMessage] = useState('');
+
   useEffect(() => {
 
     if (location.search === "") {
@@ -82,7 +85,18 @@ const LogIn: React.FC<any> = () => {
     } catch (e) {
     }
   }, []);
-
+  const onPhoneLoginError = (data: { code: number, message: string }) => {
+    console.log(data.code, data.message);
+    if (data.code != 0) {
+      setShowError(true)
+      setErrorMsg(`错误:${data.code} ${data.message}`)
+    } else {
+      setShowError(false)
+      setErrorMsg(``)
+      setSucessMessage(data.message)
+      setShowSuccess(true)
+    }
+  }
   return (
     <div className={styles.container}>
       <div className={classNames(styles.wrapper, 'card')}>
@@ -106,9 +120,17 @@ const LogIn: React.FC<any> = () => {
             {errorMsg}
           </MessageBar>
         )}
+        {showSuccess && !showError && (
+          <MessageBar
+            className={styles.alert}
+            messageBarType={MessageBarType.success}
+          >
+            {sucessMessage}
+          </MessageBar>
+        )}
         <Stack tokens={{ childrenGap: 10 }}>
           <Stack.Item>
-            <PhoneLoginForm />
+            <PhoneLoginForm onError={onPhoneLoginError} useType="admin" />
           </Stack.Item>
           <Stack.Item>
             <WxLoginBtn className={styles.button} useType='admin' />

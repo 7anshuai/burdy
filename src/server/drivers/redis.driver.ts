@@ -21,7 +21,6 @@ const connectRedisDriver = async () => {
         client.on('ready', () => console.log(console.log(chalk.green(`Connection to redis ${process.env.REDIS_URL}`))));
         await client.connect();
         redidsDriver.client = client as any;
-        const v = await redidsDriver.client.get("*")
     } catch (e) {
         console.log(e);
         console.error(chalk.red(`Error! Connection to redis ${process.env.REDIS_URL}`));
