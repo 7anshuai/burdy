@@ -32,7 +32,7 @@ app.get(
                 break
             case "user":
                 failURI = "/login"
-                failURI = "/"
+                successURI = "/"
                 break
         }
 
@@ -87,7 +87,11 @@ app.get(
             res.end();
             return
         }
-
+        // 如果两次头像不想等，那么更新用户头像
+        if (user.avatar != wxUserInfo.avatar) {
+            user.avatar = wxUserInfo.avatar;
+            await userRepository.update(user.id, { avatar: wxUserInfo.avatar });
+        }
         // 写入登录cookie
         const userSession = await userSessionRepository.save({
             user,
