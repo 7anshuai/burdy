@@ -24,12 +24,48 @@ export default class User extends BaseEntity implements IUser {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   @Index({ unique: true })
-  email: string;
+  email?: string;
 
-  @Column({ select: false })
-  password: string;
+  @Column({ select: false, nullable: true })
+  password?: string;
+
+  @Column({ nullable: true, comment: '电话' })
+  @Index({ unique: true })
+  phone?: string;
+
+  @Column({ nullable: true, select: false, comment: '微信号 openid' })
+  @Index({ unique: true })
+  wxid?: string;
+
+  @Column({ nullable: true, select: false, comment: '微信号 openid' })
+  @Index({ unique: true })
+  wxUnionId?: string;
+
+  @Column({ nullable: true, comment: '微信昵称' })
+  nickname?: string;
+
+  @Column({ nullable: true, comment: '头像' })
+  avatar?: string;
+
+  @Column({ nullable: true, comment: '姓名' })
+  realname?: string;
+
+  @Column({ nullable: true, comment: '生日' })
+  birthday?: Date;
+
+  @Column({ nullable: true, comment: '地区' })
+  location?: string;
+
+  @Column({ nullable: true, comment: '职业,行业' })
+  profession?: string;
+
+  @Column({ nullable: true, comment: '职位' })
+  workPosition?: string;
+
+  @Column({ zerofill: true, type: 'int', comment: '工作年限', default: 0 })
+  workYear?: number;
 
   @Column({ nullable: true })
   firstName?: string;
@@ -48,7 +84,7 @@ export default class User extends BaseEntity implements IUser {
 
   @ManyToMany(() => Group, (group) => group.users, {
     cascade: true,
-    onDelete: 'CASCADE'
+    onDelete: 'CASCADE',
   })
   groups: Group[];
 

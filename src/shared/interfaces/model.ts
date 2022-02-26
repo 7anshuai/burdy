@@ -13,11 +13,22 @@ export enum UserTokenType {
 
 export interface IUser {
   id: number;
-  email: string;
+  email?: string;
   firstName?: string;
   lastName?: string;
-  password: string;
+  password?: string;
   status: UserStatus;
+  phone?: string;
+  wxid?: string;
+  wxUnionId?: string;
+  nickname?: string;
+  avatar?: string;
+  realname?: string;
+  birthday?: Date;
+  location?: string;
+  profession?: string;
+  workPosition?: string;
+  workYear?: number;
   createdAt: Date;
   updatedAt: Date;
   meta: IUserMeta[];
