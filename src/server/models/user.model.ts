@@ -35,11 +35,11 @@ export default class User extends BaseEntity implements IUser {
   @Index({ unique: true })
   phone?: string;
 
-  @Column({ nullable: true, select: false, comment: '微信号 openid' })
+  @Column({ nullable: true, select: true, comment: '微信号 openid' })
   @Index({ unique: true })
   wxid?: string;
 
-  @Column({ nullable: true, select: false, comment: '微信号 openid' })
+  @Column({ nullable: true, select: true, comment: '微信号 openid' })
   @Index({ unique: true })
   wxUnionId?: string;
 
