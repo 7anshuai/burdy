@@ -136,6 +136,8 @@ export const mapPublicUser = (user) => {
   return {
     firstName: user?.firstName,
     lastName: user?.lastName,
+    nickname: user?.nickname,
+    avatar: user?.avatar,
   };
 };
 
