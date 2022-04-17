@@ -81,6 +81,9 @@ export default class Asset extends BaseEntity implements IAsset {
   @Column({ nullable: true, unique: true })
   npath?: string;
 
+  @Column({ nullable: true })
+  url?: string;
+
   @Column({ nullable: true, insert: false, update: false, select: false })
   thumbnail?: string;
 

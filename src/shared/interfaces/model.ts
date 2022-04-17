@@ -98,6 +98,7 @@ export interface IAsset {
   tags?: ITag[];
   thumbnail?: string;
   npath?: string;
+  url?: string;
 }
 
 export interface ITagMeta {

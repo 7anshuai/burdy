@@ -1,5 +1,6 @@
 import AwsS3FileDriver from '@server/drivers/aws-s3-driver';
 import FileSystemDriver from '@server/drivers/file-system-driver';
+import TencentOssDriver from '@server/drivers/tencentoss.driver';
 
 export interface IFileDriver {
   getUpload: () => any;
@@ -26,6 +27,11 @@ export default class FileDriver implements IFileDriver {
   constructor() {
     if (process.env.FILE_DRIVER === 'aws_s3') {
       this.implementation = new AwsS3FileDriver();
+    } else if (process.env.FILE_DRIVER === 'oss') {
+      this.implementation = new TencentOssDriver({
+        Domain: `${process.env.TECENTCLOUD_bucket}.file.myqcloud.com`,
+        Protocol: 'https:'
+      });
     } else {
       this.implementation = new FileSystemDriver();
     }

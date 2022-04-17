@@ -25,7 +25,7 @@ Hooks.addSyncFilter(
       meta,
       mimeType: asset.mimeType,
       tags: mapPublicTags(asset.tags),
-      src: `${
+      src: asset.url || `${
         process.env.BURDY_HOST?.length > 0 ? process.env.BURDY_HOST : ''
       }/api/uploads/${asset.npath}`,
     };

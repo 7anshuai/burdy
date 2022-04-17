@@ -316,15 +316,17 @@ app.post(
         }
 
         if (params?.mimeType !== FOLDER_MIME_TYPE) {
+          const provider = FileDriver.getInstance().getName();
+          const key = provider === 'fs' ? req?.file?.filename : getKeyName(req?.file?.key);
           if (!req.file) throw new BadRequestError('invalid_file');
           const stat = await FileDriver.getInstance().stat(
-            req?.file?.filename || getKeyName(req?.file?.key)
+            key
           );
           if (!stat) throw new BadRequestError('invalid_file');
 
           if (IMAGE_MIME_TYPES.indexOf(params.mimeType) > -1) {
             const file = await FileDriver.getInstance().read(
-              req?.file?.filename || getKeyName(req?.file?.key)
+              key
             );
             const dimensions = sizeOf(file);
             assetObj.meta = [
@@ -341,7 +343,8 @@ app.post(
 
           assetObj.provider = FileDriver.getInstance().getName();
           assetObj.contentLength = stat.contentLength;
-          assetObj.document = req?.file?.filename || getKeyName(req?.file?.key);
+          assetObj.document = key;
+          assetObj.url = (req?.file as any)?.Location
         }
 
         asset = await tManager.save(Asset, assetObj);
@@ -349,7 +352,7 @@ app.post(
       return res.send(mapAsset(asset));
     } catch (err) {
       await FileDriver.getInstance().delete(
-        req?.file?.filename || getKeyName(req?.file?.key)
+        FileDriver.getInstance().getName() === 'fs' ? req?.file?.filename : getKeyName(req?.file?.key)
       );
       throw err;
     }
