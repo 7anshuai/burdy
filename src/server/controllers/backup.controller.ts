@@ -40,6 +40,7 @@ app.post(
   asyncMiddleware(async (req, res) => {
     if (!req.file) throw new BadRequestError('invalid_file');
 
+    const provider = FileDriver.getInstance().getName();
     try {
       let backup: any = {};
       await getManager().transaction(async (entityManager) => {
@@ -52,15 +53,15 @@ app.post(
 
         backup.name = uuid();
         backup.state = IBackupState.READY;
-        backup.provider = FileDriver.getInstance().getName();
-        backup.document = req?.file?.filename || getKeyName(req?.file?.key);
+        backup.provider = provider;
+        backup.document = provider === 'fs' ? req?.file?.filename : getKeyName(req?.file?.key);
 
         backup = await backupRepository.save(backup);
       });
       res.send(backup);
     } catch (err) {
       await FileDriver.getInstance().delete(
-        req?.file?.filename || getKeyName(req?.file?.key)
+        provider === 'fs' ? req?.file?.filename : getKeyName(req?.file?.key)
       );
       throw err;
     }
