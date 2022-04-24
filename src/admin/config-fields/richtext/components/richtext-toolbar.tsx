@@ -205,6 +205,7 @@ const ActionButtons: React.FC = () => {
       type,
       'IMMUTABLE',
       {
+        url: asset?.url,
         npath: asset.npath,
         name: asset.name,
         mimeType: asset.mimeType,

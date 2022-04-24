@@ -24,7 +24,8 @@ export const parseContent = (post: IPost, path?: string) => {
       Object.keys(richtext?.entityMap || {}).forEach(key => {
         try {
           if (['IMAGE', 'AUDIO', 'VIDEO'].includes(richtext?.entityMap?.[key]?.type) && richtext?.entityMap?.[key]?.data?.npath) {
-            richtext.entityMap[key].data.src = getAssetsSrc(richtext.entityMap[key].data.npath);
+            richtext.entityMap[key].data.src = 
+              richtext.entityMap[key].data?.url || getAssetsSrc(richtext.entityMap[key].data.npath);
           } else if (richtext?.entityMap?.[key]?.type === 'COMPONENT') {
             richtext.entityMap[key].data = {
               ...(richtext.entityMap[key].data || {}),
